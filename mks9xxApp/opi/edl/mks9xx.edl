@@ -1,0 +1,777 @@
+4 0 1
+beginScreenProperties
+h 540
+major 4
+minor 0
+release 1
+w 400
+x 0
+y 0
+bgColor index 3
+botShadowColor index 11
+btnFont "arial-bold-r-14.0"
+ctlBgColor1 index 3
+ctlBgColor2 index 14
+ctlFgColor1 index 25
+ctlFgColor2 index 0
+ctlFont "arial-bold-r-14.0"
+fgColor index 14
+font "arial-medium-r-14.0"
+showGrid
+snapToGrid
+textColor index 14
+topShadowColor index 1
+endScreenProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 156
+x 160
+y 4
+bgColor index 10
+controlPv "$(P):CONNECTION_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 4
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Connection  "
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+h 22
+major 4
+minor 0
+release 0
+w 156
+x 160
+y 31
+bgColor index 3
+botShadowColor index 11
+controlPv "$(P):ANALOGUEOUTPUTFORMAT"
+fgColor index 25
+font "arial-bold-r-12.0"
+inconsistentColor index 0
+indicatorPv "$(P):ANALOGUEOUTPUTFORMAT_RBV"
+topShadowColor index 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 31
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Analogue Output Format  "
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+h 22
+major 4
+minor 0
+release 0
+w 156
+x 160
+y 58
+bgColor index 3
+botShadowColor index 11
+controlPv "$(P):UNITS"
+fgColor index 25
+font "arial-bold-r-12.0"
+inconsistentColor index 0
+indicatorPv "$(P):UNITS_RBV"
+topShadowColor index 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 58
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Units  "
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 76
+x 240
+y 85
+bgColor index 10
+controlPv "$(P):USERTAG_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+h 22
+major 10
+minor 0
+release 0
+w 76
+x 160
+y 85
+bgColor index 3
+controlPv "$(P):USERTAG"
+fgColor index 25
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 85
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  User Tag  "
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 156
+x 160
+y 112
+bgColor index 10
+controlPv "$(P):TRANSDUCERTYPE_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 112
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Transducer Type  "
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 156
+x 160
+y 139
+bgColor index 10
+controlPv "$(P):FIRMWAREVERSION_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 139
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Firmware Version  "
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 156
+x 160
+y 166
+bgColor index 10
+controlPv "$(P):HARDWAREVERSION_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 166
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Hardware Version  "
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 156
+x 160
+y 193
+bgColor index 10
+controlPv "$(P):MANUFACTURER_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 193
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Manufacturer  "
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 156
+x 160
+y 220
+bgColor index 10
+controlPv "$(P):MODEL_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 220
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Model  "
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 156
+x 160
+y 247
+bgColor index 10
+controlPv "$(P):PRESSURE_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 247
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Pressure  "
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 156
+x 160
+y 274
+bgColor index 10
+controlPv "$(P):SERIALNUMBER_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 274
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Serial Number  "
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 156
+x 160
+y 301
+bgColor index 10
+controlPv "$(P):TIMEON_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 301
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Time On  "
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 156
+x 160
+y 328
+bgColor index 10
+controlPv "$(P):TRANSDUCERTEMPERATURE_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 328
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Transducer Temperature  "
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 76
+x 240
+y 355
+bgColor index 10
+controlPv "$(P):SETPOINT_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+h 22
+major 10
+minor 0
+release 0
+w 76
+x 160
+y 355
+bgColor index 3
+controlPv "$(P):SETPOINT"
+fgColor index 25
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 355
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Set Point  "
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 76
+x 240
+y 382
+bgColor index 10
+controlPv "$(P):SETPOINTHYSTERESIS_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+h 22
+major 10
+minor 0
+release 0
+w 76
+x 160
+y 382
+bgColor index 3
+controlPv "$(P):SETPOINTHYSTERESIS"
+fgColor index 25
+fill
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 382
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Set Point Hysteresis  "
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+h 22
+major 4
+minor 0
+release 0
+w 156
+x 160
+y 409
+bgColor index 3
+botShadowColor index 11
+controlPv "$(P):SETPOINTDIRECTION"
+fgColor index 25
+font "arial-bold-r-12.0"
+inconsistentColor index 0
+indicatorPv "$(P):SETPOINTDIRECTION_RBV"
+topShadowColor index 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 409
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Set Point Direction  "
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+h 22
+major 4
+minor 0
+release 0
+w 156
+x 160
+y 436
+bgColor index 3
+botShadowColor index 11
+controlPv "$(P):SETPOINTENABLE"
+fgColor index 25
+font "arial-bold-r-12.0"
+inconsistentColor index 0
+indicatorPv "$(P):SETPOINTENABLE_RBV"
+topShadowColor index 1
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 436
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Set Point Enable  "
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+h 22
+major 4
+minor 4
+release 0
+w 156
+x 160
+y 463
+bgColor index 10
+controlPv "$(P):SETPOINTSTATE_RBV"
+fgColor index 15
+font "arial-bold-r-12.0"
+fontAlign "center"
+limitsFromDb
+nullColor index 0
+showUnits
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+h 22
+major 4
+minor 1
+release 0
+w 156
+x 0
+y 463
+bgColor index 3
+fgColor index 14
+font "arial-bold-r-12.0"
+fontAlign "left"
+value {
+  "  Set Point State  "
+}
+endObjectProperties

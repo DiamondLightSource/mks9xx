@@ -1,0 +1,239 @@
+
+#
+# mks9xx.template
+#
+# % macro, P, PV Prefix
+# % macro, PORT, Asyn port name
+# % macro, gda_name, GDA root name
+# % macro, gda_desc, GDA description
+#
+
+# %archiver 10 Monitor
+record(mbbi, "$(P):CONNECTION_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),0,5)CONNECTION")
+  field(ZRVL, "0")
+  field(ZRST, "Disconnected")
+  field(ONVL, "1")
+  field(ONST, "Connected")
+}
+# %archiver 10 Monitor
+record(mbbi, "$(P):ANALOGUEOUTPUTFORMAT_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),0,5)ANALOGUEOUTPUTFORMAT")
+  field(ZRVL, "0")
+  field(ZRST, "Log5")
+  field(ONVL, "1")
+  field(ONST, "Log10")
+  field(TWVL, "2")
+  field(TWST, "Linear5")
+  field(THVL, "3")
+  field(THST, "Linear10")
+}
+# %archiver 10 Monitor
+# %autosave 2 VAL
+record(mbbo, "$(P):ANALOGUEOUTPUTFORMAT")
+{
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),0,5)ANALOGUEOUTPUTFORMAT")
+  field(ZRVL, "0")
+  field(ZRST, "Log5")
+  field(ONVL, "1")
+  field(ONST, "Log10")
+  field(TWVL, "2")
+  field(TWST, "Linear5")
+  field(THVL, "3")
+  field(THST, "Linear10")
+}
+# %archiver 10 Monitor
+record(mbbi, "$(P):UNITS_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),0,5)UNITS")
+  field(ZRVL, "0")
+  field(ZRST, "Torr")
+  field(ONVL, "1")
+  field(ONST, "mBar")
+  field(TWVL, "2")
+  field(TWST, "Pascal")
+}
+# %archiver 10 Monitor
+# %autosave 2 VAL
+record(mbbo, "$(P):UNITS")
+{
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),0,5)UNITS")
+  field(ZRVL, "0")
+  field(ZRST, "Torr")
+  field(ONVL, "1")
+  field(ONST, "mBar")
+  field(TWVL, "2")
+  field(TWST, "Pascal")
+}
+# %archiver 10 Monitor
+record(stringin, "$(P):USERTAG_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynOctetRead")
+  field(INP,  "@asyn($(PORT),0,5)USERTAG")
+}
+# %archiver 10 Monitor
+# %autosave 2 VAL
+record(stringout, "$(P):USERTAG")
+{
+  field(DTYP, "asynOctetWrite")
+  field(OUT,  "@asyn($(PORT),0,5)USERTAG")
+}
+record(stringin, "$(P):TRANSDUCERTYPE_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynOctetRead")
+  field(INP,  "@asyn($(PORT),0,5)TRANSDUCERTYPE")
+}
+record(stringin, "$(P):FIRMWAREVERSION_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynOctetRead")
+  field(INP,  "@asyn($(PORT),0,5)FIRMWAREVERSION")
+}
+record(stringin, "$(P):HARDWAREVERSION_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynOctetRead")
+  field(INP,  "@asyn($(PORT),0,5)HARDWAREVERSION")
+}
+record(stringin, "$(P):MANUFACTURER_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynOctetRead")
+  field(INP,  "@asyn($(PORT),0,5)MANUFACTURER")
+}
+record(stringin, "$(P):MODEL_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynOctetRead")
+  field(INP,  "@asyn($(PORT),0,5)MODEL")
+}
+# %archiver 10 Monitor
+record(ai, "$(P):PRESSURE_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynFloat64")
+  field(INP,  "@asyn($(PORT),0,5)PRESSURE")
+  field(PREC, "1")
+}
+record(stringin, "$(P):SERIALNUMBER_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynOctetRead")
+  field(INP,  "@asyn($(PORT),0,5)SERIALNUMBER")
+}
+record(ai, "$(P):TIMEON_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynFloat64")
+  field(INP,  "@asyn($(PORT),0,5)TIMEON")
+  field(PREC, "1")
+  field(EGU,  "hrs")
+}
+# %archiver 10 Monitor
+record(ai, "$(P):TRANSDUCERTEMPERATURE_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynFloat64")
+  field(INP,  "@asyn($(PORT),0,5)TRANSDUCERTEMPERATURE")
+  field(EGU,  "C")
+}
+# %archiver 10 Monitor
+record(ai, "$(P):SETPOINT_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynFloat64")
+  field(INP,  "@asyn($(PORT),0,5)SETPOINT")
+  field(PREC, "1")
+}
+# %archiver 10 Monitor
+# %autosave 2 VAL
+record(ao, "$(P):SETPOINT")
+{
+  field(DTYP, "asynFloat64")
+  field(OUT,  "@asyn($(PORT),0,5)SETPOINT")
+  field(PREC, "1")
+}
+# %archiver 10 Monitor
+record(ai, "$(P):SETPOINTHYSTERESIS_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynFloat64")
+  field(INP,  "@asyn($(PORT),0,5)SETPOINTHYSTERESIS")
+  field(PREC, "1")
+}
+# %archiver 10 Monitor
+# %autosave 2 VAL
+record(ao, "$(P):SETPOINTHYSTERESIS")
+{
+  field(DTYP, "asynFloat64")
+  field(OUT,  "@asyn($(PORT),0,5)SETPOINTHYSTERESIS")
+  field(PREC, "1")
+}
+# %archiver 10 Monitor
+record(mbbi, "$(P):SETPOINTDIRECTION_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),0,5)SETPOINTDIRECTION")
+  field(ZRVL, "0")
+  field(ZRST, "Below")
+  field(ONVL, "1")
+  field(ONST, "Above")
+}
+# %archiver 10 Monitor
+# %autosave 2 VAL
+record(mbbo, "$(P):SETPOINTDIRECTION")
+{
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),0,5)SETPOINTDIRECTION")
+  field(ZRVL, "0")
+  field(ZRST, "Below")
+  field(ONVL, "1")
+  field(ONST, "Above")
+}
+# %archiver 10 Monitor
+record(mbbi, "$(P):SETPOINTENABLE_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),0,5)SETPOINTENABLE")
+  field(ZRVL, "0")
+  field(ZRST, "Disable")
+  field(ONVL, "1")
+  field(ONST, "Enable")
+}
+# %archiver 10 Monitor
+# %autosave 2 VAL
+record(mbbo, "$(P):SETPOINTENABLE")
+{
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),0,5)SETPOINTENABLE")
+  field(ZRVL, "0")
+  field(ZRST, "Disable")
+  field(ONVL, "1")
+  field(ONST, "Enable")
+}
+# %archiver 10 Monitor
+record(mbbi, "$(P):SETPOINTSTATE_RBV")
+{
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),0,5)SETPOINTSTATE")
+  field(ZRVL, "0")
+  field(ZRST, "Clear")
+  field(ONVL, "1")
+  field(ONST, "Set")
+}
+
