@@ -12,7 +12,7 @@
 #include <asynPortDriver.h>
 #include "protocol.h"
 
-//*!*Section messageDeclaration begin*!*
+
 class MsgFailReply: public Message
 {
 public:
@@ -36,31 +36,52 @@ public:
     TextFloat<epicsFloat64>* val;
     ConstStr* post;
 };
+class MsgIntReply: public Message
+	{
+	public:
+		MsgIntReply();
+		ConstStr* pre;
+		TextInt<epicsInt32>* val;
+		ConstStr* post;
+	};
 class MsgGetAnOutputFormat: public Message
 {
 public:
-    MsgGetAnOutputFormat();
+    MsgGetAnOutputFormat(int channel_in = 1);
     ConstStr* pre;
+	TextInt<epicsInt32>* channel;
+    ConstStr* post;
 };
 class MsgSetAnOutputFormat: public Message
 {
 public:
-    MsgSetAnOutputFormat();
+    MsgSetAnOutputFormat(int channel_in = 1);
     ConstStr* pre;
+	TextInt<epicsInt32>* channel;
+	ConstStr* pling;
     TerminatedEnum* val;
+    ConstStr* post;
 };
 class MsgReplyAnOutputFormat: public Message
-{
-public:
-    MsgReplyAnOutputFormat();
-    ConstStr* pre;
-    TerminatedEnum* val;
-};
+	{
+	public:
+		MsgReplyAnOutputFormat();
+		ConstStr* pre;
+		TerminatedEnum* val;
+	};
+
 class MsgGetUnit: public Message
 {
 public:
     MsgGetUnit();
     ConstStr* pre;
+};
+class MsgGetUnitReply: public Message
+{
+public:
+    MsgGetUnitReply();
+    ConstStr* pre;
+	TerminatedEnum* val;
 };
 class MsgSetUnit: public Message
 {
@@ -89,12 +110,6 @@ public:
     ConstStr* pre;
     TerminatedStr* val;
 };
-class MsgGetTransducerType: public Message
-{
-public:
-    MsgGetTransducerType();
-    ConstStr* pre;
-};
 class MsgGetFirmwareVersion: public Message
 {
 public:
@@ -120,11 +135,13 @@ public:
     ConstStr* pre;
 };
 class MsgGetPressure: public Message
-{
-public:
-    MsgGetPressure();
-    ConstStr* pre;
-};
+	{
+	public:
+		MsgGetPressure(int gauge_in = 1);
+		ConstStr* pre;
+		TextInt<epicsInt32>* gauge;
+		ConstStr* post;
+	};
 class MsgGetSerialNumber: public Message
 {
 public:
@@ -143,45 +160,58 @@ public:
     MsgGetTransducerTemperature();
     ConstStr* pre;
 };
-class MsgGetSetPoint: public Message
-{
-public:
-    MsgGetSetPoint();
-    ConstStr* pre;
-};
-class MsgSetSetPoint: public Message
-{
-public:
-    MsgSetSetPoint();
-    ConstStr* pre;
-    TextFloat<epicsFloat64>* val;
-    ConstStr* post;
-};
+class MsgGetSetpoint: public Message
+	{
+	public:
+		MsgGetSetpoint(int relay_in = 1);
+		ConstStr* pre;
+		TextInt<epicsInt32>* relay;
+		ConstStr* post;
+	};
+class MsgSetSetpoint: public Message
+	{
+	public:
+		MsgSetSetpoint(int relay_in = 1);
+
+		ConstStr* pre;
+		TextInt<epicsInt32>* relay;
+		ConstStr* pling;
+		TextFloat<epicsFloat64>* val;
+		ConstStr* post;
+	};
 class MsgGetHysteresis: public Message
 {
 public:
-    MsgGetHysteresis();
+    MsgGetHysteresis(int relay_in = 1);
     ConstStr* pre;
+	TextInt<epicsInt32>* relay;
+	ConstStr* post;
 };
 class MsgSetHysteresis: public Message
 {
 public:
-    MsgSetHysteresis();
+    MsgSetHysteresis(int relay_in = 1);
     ConstStr* pre;
+	TextInt<epicsInt32>* relay;
+	ConstStr* pling;
     TextFloat<epicsFloat64>* val;
     ConstStr* post;
 };
 class MsgGetSpDirection: public Message
 {
 public:
-    MsgGetSpDirection();
+    MsgGetSpDirection(int relay_in = 1);
     ConstStr* pre;
+	TextInt<epicsInt32>* relay;
+	ConstStr* post;
 };
 class MsgSetSpDirection: public Message
 {
 public:
-    MsgSetSpDirection();
+    MsgSetSpDirection(int relay_in = 1);
     ConstStr* pre;
+	TextInt<epicsInt32>* relay;
+	ConstStr* pling;
     TerminatedEnum* val;
 };
 class MsgReplySpDirection: public Message
@@ -194,14 +224,18 @@ public:
 class MsgGetSpEnable: public Message
 {
 public:
-    MsgGetSpEnable();
+    MsgGetSpEnable(int relay_in = 1);
     ConstStr* pre;
+	TextInt<epicsInt32>* relay;
+	ConstStr* post;
 };
 class MsgSetSpEnable: public Message
 {
 public:
-    MsgSetSpEnable();
+    MsgSetSpEnable(int relay_in = 1);
     ConstStr* pre;
+	TextInt<epicsInt32>* relay;
+	ConstStr* pling;
     TerminatedEnum* val;
 };
 class MsgReplySpEnable: public Message
@@ -212,11 +246,13 @@ public:
     TerminatedEnum* val;
 };
 class MsgGetSpStatus: public Message
-{
-public:
-    MsgGetSpStatus();
-    ConstStr* pre;
-};
+	{
+	public:
+		MsgGetSpStatus(int relay_in = 1);
+		ConstStr* pre;
+		TextInt<epicsInt32>* relay;
+		ConstStr* post;
+	};
 class MsgReplySpStatus: public Message
 {
 public:
@@ -224,7 +260,91 @@ public:
     ConstStr* pre;
     TerminatedEnum* val;
 };
-//*!*Section messageDeclaration end*!*
+
+class MsgGetTransducerType: public Message
+	{
+	public:
+		MsgGetTransducerType();
+		ConstStr* pre;
+	};
+class MsgReplyTransducerType: public Message
+	{
+	public:
+		MsgReplyTransducerType();
+		ConstStr* pre;
+		TerminatedEnum* val;
+	};
+class MsgGetTransducerStatus: public Message
+	{
+	public:
+		MsgGetTransducerStatus();
+		ConstStr* pre;
+	};
+class MsgReplyTransducerStatus: public Message
+	{
+	public:
+		MsgReplyTransducerStatus();
+		ConstStr* pre;
+	    TerminatedEnum* val;
+	};
+
+class MsgSetCCControl: public Message
+{
+public:
+    MsgSetCCControl();
+    ConstStr* pre;
+    TerminatedEnum* val;
+};
+class MsgReplyCCControl: public Message
+{
+public:
+    MsgReplyCCControl();
+    ConstStr* pre;
+    TerminatedEnum* val;
+};
+
+class MsgSetGasType: public Message
+{
+public:
+    MsgSetGasType();
+    ConstStr* pre;
+    TerminatedEnum* val;
+};
+class MsgGetGasType: public Message
+{
+public:
+    MsgGetGasType();
+    ConstStr* pre;
+};
+class MsgReplyGasType: public Message
+{
+public:
+    MsgReplyGasType();
+    ConstStr* pre;
+    TerminatedEnum* val;
+};
+
+class MsgSetLock: public Message
+	{
+	public:
+		MsgSetLock();
+		ConstStr* pre;
+		TerminatedEnum* val;
+	};
+class MsgGetLock: public Message
+	{
+	public:
+		MsgGetLock();
+		ConstStr* pre;
+	};
+class MsgReplyLock: public Message
+	{
+	public:
+		MsgReplyLock();
+		ConstStr* pre;
+		TerminatedEnum* val;
+	};
+
 
 class mks9xx : public asynPortDriver
 {
@@ -255,17 +375,22 @@ public:
     void readRun();
 // Data
 private:
-    //*!*Section enumDefinition begin*!*
+
     enum {Connection_Disconnected=0, Connection_Connected};
     enum {AnalogueOutputFormat_Log5=0, AnalogueOutputFormat_Log10, AnalogueOutputFormat_Linear5, AnalogueOutputFormat_Linear10};
     enum {Units_Torr=0, Units_mBar, Units_Pascal};
     enum {SetPointDirection_Below=0, SetPointDirection_Above};
     enum {SetPointEnable_Disable=0, SetPointEnable_Enable};
     enum {SetPointState_Clear=0, SetPointState_Set};
-    //*!*Section enumDefinition end*!*
-    //*!*Section stringDeclaration begin*!*
+    enum {CCState_Off=0, CCState_On};
+
+    static const int NUM_RELAYS  = 3; // Setpoint relays
+    static const int NUM_SENSORS = 5; // Pressure sensors
+    static const int NUM_AOCHANS = 2; // Analogue output channels
+
     static const char* nameConnection;
-    static const char* nameAnalogueOutputFormat;
+    static const char* nameAnalogueOutputFormat1;
+    static const char* nameAnalogueOutputFormat2;
     static const char* nameUnits;
     static const char* nameUserTag;
     static const char* nameTransducerType;
@@ -273,20 +398,39 @@ private:
     static const char* nameHardwareVersion;
     static const char* nameManufacturer;
     static const char* nameModel;
-    static const char* namePressure;
+    static const char* namePressure1;
+    static const char* namePressure2;
+    static const char* namePressure3;
+    static const char* namePressure4;
+    static const char* namePressure5;
     static const char* nameSerialNumber;
     static const char* nameTimeOn;
     static const char* nameTransducerTemperature;
-    static const char* nameSetPoint;
-    static const char* nameSetPointHysteresis;
-    static const char* nameSetPointDirection;
-    static const char* nameSetPointEnable;
-    static const char* nameSetPointState;
-    //*!*Section stringDeclaration end*!*
+    static const char* nameSetPoint1;
+    static const char* nameSetPoint2;
+    static const char* nameSetPoint3;
+    static const char* nameSetPointHysteresis1;
+    static const char* nameSetPointHysteresis2;
+    static const char* nameSetPointHysteresis3;
+    static const char* nameSetPointDirection1;
+    static const char* nameSetPointDirection2;
+    static const char* nameSetPointDirection3;
+    static const char* nameSetPointEnable1;
+    static const char* nameSetPointEnable2;
+    static const char* nameSetPointEnable3;
+    static const char* nameSetPointState1;
+    static const char* nameSetPointState2;
+    static const char* nameSetPointState3;
+    static const char* nameTransducerStatus;
+    static const char* nameCCControl;
+    static const char* nameGasType;
+    static const char* nameLock;
+
     int FIRST_PARAM;
-    //*!*Section indexDeclaration begin*!*
+
     int indexConnection;
-    int indexAnalogueOutputFormat;
+    int indexAnalogueOutputFormat1;
+    int indexAnalogueOutputFormat2;
     int indexUnits;
     int indexUserTag;
     int indexTransducerType;
@@ -294,18 +438,36 @@ private:
     int indexHardwareVersion;
     int indexManufacturer;
     int indexModel;
-    int indexPressure;
+    int indexPressure1;
+    int indexPressure2;
+    int indexPressure3;
+    int indexPressure4;
+    int indexPressure5;
     int indexSerialNumber;
     int indexTimeOn;
     int indexTransducerTemperature;
-    int indexSetPoint;
-    int indexSetPointHysteresis;
-    int indexSetPointDirection;
-    int indexSetPointEnable;
-    int indexSetPointState;
-    //*!*Section indexDeclaration end*!*
+    int indexSetPoint1;
+    int indexSetPoint2;
+    int indexSetPoint3;
+    int indexSetPointHysteresis1;
+    int indexSetPointHysteresis2;
+    int indexSetPointHysteresis3;
+    int indexSetPointDirection1;
+    int indexSetPointDirection2;
+    int indexSetPointDirection3;
+    int indexSetPointEnable1;
+    int indexSetPointEnable2;
+    int indexSetPointEnable3;
+    int indexSetPointState1;
+    int indexSetPointState2;
+    int indexSetPointState3;
+    int indexTransducerStatus;
+    int indexCCControl;
+    int indexGasType;
+    int indexLock;
+
     int LAST_PARAM;
-    //*!*Section protocolDeclaration begin*!*
+
     Protocol* protocolAnOutputFormat;
     Protocol* protocolUnit;
     Protocol* protocolUserTag;
@@ -323,37 +485,63 @@ private:
     Protocol* protocolSpDirection;
     Protocol* protocolSpEnable;
     Protocol* protocolSpStatus;
-    //*!*Section protocolDeclaration end*!*
-    asynUser* serialPortUser;
-    ReadThread* readIt;
-    static const double pollPeriod;
-    static const int userTagLength;
-    MsgGetTransducerType msgTransducerType;
-    MsgGetFirmwareVersion msgFirmwareVersion;
-    MsgGetHardwareVersion msgHardwareVersion;
-    MsgGetManufacturer msgManufacturer;
-    MsgGetModel msgModel;
-    MsgGetSerialNumber msgSerialNumber;
-    MsgSetAnOutputFormat msgAnOutputFormat;
-    MsgSetHysteresis msgHysteresis;
-    MsgSetSetPoint msgSetPoint;
-    MsgSetSpDirection msgSpDirection;
-    MsgSetSpEnable msgSpEnable;
-    MsgSetUnit msgUnit;
-    MsgSetUsertag msgSetUserTag;
-    MsgGetUserTag msgUserTag;
-    MsgGetPressure msgPressure;
-    MsgGetTimeOn msgTimeOn;
+    Protocol* protocolTransducerStatus;
+    Protocol* protocolCCControl;
+    Protocol* protocolGasType;
+    Protocol* protocolLock;
+
+    asynUser* 					serialPortUser;
+    ReadThread* 				readIt;
+    static const double 		pollPeriod;
+    static const int 			userTagLength;
+    MsgGetFirmwareVersion 		msgFirmwareVersion;
+    MsgGetHardwareVersion 		msgHardwareVersion;
+    MsgGetManufacturer 			msgManufacturer;
+    MsgGetModel 				msgModel;
+    MsgGetSerialNumber 			msgSerialNumber;
+    MsgSetAnOutputFormat 		*msgSetAnOutputFormat[NUM_AOCHANS];
+    MsgGetAnOutputFormat 		*msgGetAnOutputFormat[NUM_AOCHANS];
+    MsgGetHysteresis 			*msgGetHysteresis[NUM_RELAYS];
+    MsgSetHysteresis 			*msgSetHysteresis[NUM_RELAYS];
+    MsgSetSetpoint 				*msgSetSetpoint[NUM_RELAYS];
+    MsgGetSetpoint 				*msgGetSetpoint[NUM_RELAYS];
+    MsgGetSpDirection 			*msgGetSpDirection[NUM_RELAYS];
+    MsgSetSpDirection 			*msgSetSpDirection[NUM_RELAYS];
+    MsgGetSpEnable 				*msgGetSpEnable[NUM_RELAYS];
+    MsgSetSpEnable 				*msgSetSpEnable[NUM_RELAYS];
+    MsgSetUnit 					msgSetUnit;
+    MsgGetUnit 					msgGetUnit;
+    MsgSetUsertag 				msgSetUserTag;
+    MsgGetUserTag 				msgUserTag;
+    MsgGetPressure 				*msgPressure[NUM_SENSORS];
+    MsgGetTimeOn 				msgTimeOn;
     MsgGetTransducerTemperature msgTransducerTemperature;
-    MsgGetSpStatus msgSpStatus;
-// Helper functions
+    MsgGetSpStatus 				*msgGetSpStatus[NUM_RELAYS];
+    MsgGetTransducerType		msgTransducerType;
+    MsgGetTransducerStatus 		msgTransducerStatus;
+    MsgSetCCControl     		msgCCControl;
+    MsgSetGasType 	    		msgSetGasType;
+    MsgGetGasType 	    		msgGetGasType;
+    MsgSetLock 	    			msgSetLock;
+    MsgGetLock 	    			msgGetLock;
+
+    // Helper functions
 private:
     bool getString(Protocol* protocol, Message* cmd, int handle);
     bool getFloat(Protocol* protocol, Message* cmd, int handle);
+    bool getInt(Protocol* protocol, Message* cmd, int handle);
     bool getSpStatus(Protocol* protocol, Message* cmd, int handle);
+    bool getTransducerType(Protocol* protocol, Message* cmd, int handle);
+    bool getTransducerStatus(Protocol* protocol, Message* cmd, int handle);
     bool setInt(Protocol* protocol, Message* cmd, TerminatedEnum* valField, int handle);
+    bool setInt(Protocol* protocol, Message* cmd, TextInt<epicsInt32>* valField, int handle);
     bool setFloat(Protocol* protocol, Message* cmd, TextFloat<epicsFloat64>* valField, int handle);
     bool setString(Protocol* protocol, Message* cmd, TerminatedStr* valField, int handle);
+    bool getUnit(Protocol* protocol, Message* cmd, int handle);
+    bool getGasType(Protocol* protocol, Message* cmd, int handle);
+    bool getSpEnable(Protocol* protocol, Message* cmd, int handle);
+    bool getSpDirection(Protocol* protocol, Message* cmd, int handle);
+    bool getAnOutputFormat(Protocol* protocol, Message* cmd, int handle);
 };
 
 #endif

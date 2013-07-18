@@ -10,31 +10,48 @@
 #include <epicsExport.h>
 
 // Parameter name definitions
-//*!*Section stringDefinition begin*!*
-const char* mks9xx::nameConnection = "CONNECTION";
-const char* mks9xx::nameAnalogueOutputFormat = "ANALOGUEOUTPUTFORMAT";
-const char* mks9xx::nameUnits = "UNITS";
-const char* mks9xx::nameUserTag = "USERTAG";
-const char* mks9xx::nameTransducerType = "TRANSDUCERTYPE";
-const char* mks9xx::nameFirmwareVersion = "FIRMWAREVERSION";
-const char* mks9xx::nameHardwareVersion = "HARDWAREVERSION";
-const char* mks9xx::nameManufacturer = "MANUFACTURER";
-const char* mks9xx::nameModel = "MODEL";
-const char* mks9xx::namePressure = "PRESSURE";
-const char* mks9xx::nameSerialNumber = "SERIALNUMBER";
-const char* mks9xx::nameTimeOn = "TIMEON";
+const char* mks9xx::nameConnection            = "CONNECTION";
+const char* mks9xx::nameAnalogueOutputFormat1 = "ANALOGUEOUTPUTFORMAT1";
+const char* mks9xx::nameAnalogueOutputFormat2 = "ANALOGUEOUTPUTFORMAT2";
+const char* mks9xx::nameUnits                 = "UNITS";
+const char* mks9xx::nameUserTag               = "USERTAG";
+const char* mks9xx::nameFirmwareVersion       = "FIRMWAREVERSION";
+const char* mks9xx::nameHardwareVersion       = "HARDWAREVERSION";
+const char* mks9xx::nameManufacturer          = "MANUFACTURER";
+const char* mks9xx::nameModel                 = "MODEL";
+const char* mks9xx::namePressure1             = "PRESSURE1";
+const char* mks9xx::namePressure2             = "PRESSURE2";
+const char* mks9xx::namePressure3             = "PRESSURE3";
+const char* mks9xx::namePressure4             = "PRESSURE4";
+const char* mks9xx::namePressure5             = "PRESSURE5";
+const char* mks9xx::nameSerialNumber          = "SERIALNUMBER";
+const char* mks9xx::nameTimeOn                = "TIMEON";
 const char* mks9xx::nameTransducerTemperature = "TRANSDUCERTEMPERATURE";
-const char* mks9xx::nameSetPoint = "SETPOINT";
-const char* mks9xx::nameSetPointHysteresis = "SETPOINTHYSTERESIS";
-const char* mks9xx::nameSetPointDirection = "SETPOINTDIRECTION";
-const char* mks9xx::nameSetPointEnable = "SETPOINTENABLE";
-const char* mks9xx::nameSetPointState = "SETPOINTSTATE";
-//*!*Section stringDefinition end*!*
+const char* mks9xx::nameSetPoint1             = "SETPOINT1";
+const char* mks9xx::nameSetPoint2             = "SETPOINT2";
+const char* mks9xx::nameSetPoint3             = "SETPOINT3";
+const char* mks9xx::nameSetPointHysteresis1   = "SETPOINTHYSTERESIS1";
+const char* mks9xx::nameSetPointHysteresis2   = "SETPOINTHYSTERESIS2";
+const char* mks9xx::nameSetPointHysteresis3   = "SETPOINTHYSTERESIS3";
+const char* mks9xx::nameSetPointDirection1    = "SETPOINTDIRECTION1";
+const char* mks9xx::nameSetPointDirection2    = "SETPOINTDIRECTION2";
+const char* mks9xx::nameSetPointDirection3    = "SETPOINTDIRECTION3";
+const char* mks9xx::nameSetPointEnable1       = "SETPOINTENABLE1";
+const char* mks9xx::nameSetPointEnable2       = "SETPOINTENABLE2";
+const char* mks9xx::nameSetPointEnable3       = "SETPOINTENABLE3";
+const char* mks9xx::nameSetPointState1        = "SETPOINTSTATE1";
+const char* mks9xx::nameSetPointState2        = "SETPOINTSTATE2";
+const char* mks9xx::nameSetPointState3        = "SETPOINTSTATE3";
+const char* mks9xx::nameTransducerType        = "TRANSDUCERTYPE";
+const char* mks9xx::nameTransducerStatus      = "TRANSDUCERSTATUS";
+const char* mks9xx::nameCCControl             = "CCCON";
+const char* mks9xx::nameGasType               = "GASTYPE";
+const char* mks9xx::nameLock                  = "LOCK";
+
 #define NUM_PARAMS (&LAST_PARAM - &FIRST_PARAM - 1)
 const double mks9xx::pollPeriod = 1.0;
 const int mks9xx::userTagLength = 30;
 
-//*!*Section messageDefinition begin*!*
 MsgFailReply::MsgFailReply()
     : Message("MsgFailReply")
 {
@@ -52,26 +69,42 @@ MsgFloatReply::MsgFloatReply()
     : Message("MsgFloatReply")
 {
     pre = new ConstStr("pre", this, "@253ACK", 7);
-    val = new TextFloat<epicsFloat64>("val", this, 1, false);
+//    val = new TextFloat<epicsFloat64>("val", this, 1, false);
+    val = new TextFloat<epicsFloat64>("val", this, 2, false);
     post = new ConstStr("post", this, ";FF", 3);
 }
-MsgGetAnOutputFormat::MsgGetAnOutputFormat()
-    : Message("MsgGetAnOutputFormat")
-{
-    pre = new ConstStr("pre", this, "@253DAC?;FF", 11);
-}
-MsgSetAnOutputFormat::MsgSetAnOutputFormat()
-    : Message("MsgSetAnOutputFormat")
-{
-    pre = new ConstStr("pre", this, "@253DAC!", 8);
-    val = new TerminatedEnum("val", this, ";FF", "Log5\0Log10\0Linear5\0Linear10\0\0");
-}
-MsgReplyAnOutputFormat::MsgReplyAnOutputFormat()
-    : Message("MsgReplyAnOutputFormat")
+MsgIntReply::MsgIntReply()
+    : Message("MsgIntReply")
 {
     pre = new ConstStr("pre", this, "@253ACK", 7);
-    val = new TerminatedEnum("val", this, ";FF", "Log5\0Log10\0Linear5\0Linear10\0\0");
+    val = new TextInt<epicsInt32>("val", this, /*base=*/10);
+    post = new ConstStr("post", this, ";FF", 3);
 }
+MsgGetAnOutputFormat::MsgGetAnOutputFormat(int channel_in)
+    : Message("MsgGetAnOutputFormat")
+	{
+    pre = new ConstStr("pre", this, "@253AO", 6);
+    channel = new TextInt<epicsInt32>("channel", this, /*base=*/10);
+    post = new ConstStr("post", this, "?;FF", 4);
+	*channel = channel_in;
+	}
+MsgSetAnOutputFormat::MsgSetAnOutputFormat(int channel_in)
+    : Message("MsgSetAnOutputFormat")
+	{
+    pre = new ConstStr("pre", this, "@253AO", 6);
+    channel = new TextInt<epicsInt32>("channel", this, /*base=*/10);
+    pling = new ConstStr("pling", this, "!", 1);
+    val = new TerminatedEnum("val", this, ";FF", "10""\0""20""\0""30\0\0");
+    *channel = channel_in;
+	}
+
+MsgReplyAnOutputFormat::MsgReplyAnOutputFormat()
+    : Message("MsgReplyAnOutputFormat")
+	{
+    pre = new ConstStr("pre", this, "@253ACK", 7);
+    val = new TerminatedEnum("val", this, ";FF", "10""\0""20""\0""30\0\0");
+	}
+
 MsgGetUnit::MsgGetUnit()
     : Message("MsgGetUnit")
 {
@@ -81,13 +114,13 @@ MsgSetUnit::MsgSetUnit()
     : Message("MsgSetUnit")
 {
     pre = new ConstStr("pre", this, "@253U!", 6);
-    val = new TerminatedEnum("val", this, ";FF", "Torr\0mBar\0Pascal\0\0");
+    val = new TerminatedEnum("val", this, ";FF", "TORR\0MBAR\0PASCAL\0\0");
 }
 MsgReplyUnit::MsgReplyUnit()
     : Message("MsgReplyUnit")
 {
     pre = new ConstStr("pre", this, "@253ACK", 7);
-    val = new TerminatedEnum("val", this, ";FF", "Torr\0mBar\0Pascal\0\0");
+    val = new TerminatedEnum("val", this, ";FF", "TORR\0MBAR\0PASCAL\0\0");
 }
 MsgGetUserTag::MsgGetUserTag()
     : Message("MsgGetUserTag")
@@ -99,11 +132,6 @@ MsgSetUsertag::MsgSetUsertag()
 {
     pre = new ConstStr("pre", this, "@253UT!", 7);
     val = new TerminatedStr("val", this, ";FF");
-}
-MsgGetTransducerType::MsgGetTransducerType()
-    : Message("MsgGetTransducerType")
-{
-    pre = new ConstStr("pre", this, "@253DT?;FF", 10);
 }
 MsgGetFirmwareVersion::MsgGetFirmwareVersion()
     : Message("MsgGetFirmwareVersion")
@@ -125,11 +153,14 @@ MsgGetModel::MsgGetModel()
 {
     pre = new ConstStr("pre", this, "@253MD?;FF", 10);
 }
-MsgGetPressure::MsgGetPressure()
+MsgGetPressure::MsgGetPressure(int gauge_in)
     : Message("MsgGetPressure")
-{
-    pre = new ConstStr("pre", this, "@253PR1?;FF", 11);
-}
+	{
+    pre = new ConstStr("pre", this, "@253PR", 6);
+    gauge = new TextInt<epicsInt32>("gauge", this, /*base=*/10);
+    post = new ConstStr("post", this, "?;FF", 4);
+	*gauge = gauge_in;
+	}
 MsgGetSerialNumber::MsgGetSerialNumber()
     : Message("MsgGetSerialNumber")
 {
@@ -145,76 +176,177 @@ MsgGetTransducerTemperature::MsgGetTransducerTemperature()
 {
     pre = new ConstStr("pre", this, "@253TEM?;FF", 11);
 }
-MsgGetSetPoint::MsgGetSetPoint()
-    : Message("MsgGetSetPoint")
-{
-    pre = new ConstStr("pre", this, "@253SP1?;FF", 11);
-}
-MsgSetSetPoint::MsgSetSetPoint()
-    : Message("MsgSetSetPoint")
-{
-    pre = new ConstStr("pre", this, "@253SP1!", 8);
+MsgGetSetpoint::MsgGetSetpoint(int relay_in)
+    : Message("MsgGetSetpoint")
+	{
+    pre = new ConstStr("pre", this, "@253SP", 6);
+    relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
+    post = new ConstStr("post", this, "?;FF", 4);
+	*relay = relay_in;
+	}
+MsgSetSetpoint::MsgSetSetpoint(int relay_in)
+    : Message("MsgSetSetpoint")
+	{
+    pre = new ConstStr("pre", this, "@253SP", 6);
+    relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
+    pling = new ConstStr("pling", this, "!", 1);
     val = new TextFloat<epicsFloat64>("val", this, 1, false);
     post = new ConstStr("post", this, ";FF", 3);
-}
-MsgGetHysteresis::MsgGetHysteresis()
+	*relay = relay_in;
+	}
+MsgGetHysteresis::MsgGetHysteresis(int relay_in)
     : Message("MsgGetHysteresis")
 {
-    pre = new ConstStr("pre", this, "@253SH1?;FF", 11);
+    pre = new ConstStr("pre", this, "@253SH", 6);
+	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
+    post = new ConstStr("post", this, "?;FF", 4);
+    *relay = relay_in;
 }
-MsgSetHysteresis::MsgSetHysteresis()
+MsgSetHysteresis::MsgSetHysteresis(int relay_in)
     : Message("MsgSetHysteresis")
 {
-    pre = new ConstStr("pre", this, "@253SH1!", 8);
+    pre = new ConstStr("pre", this, "@253SH", 6);
+	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
+    pling = new ConstStr("pling", this, "!", 1);
     val = new TextFloat<epicsFloat64>("val", this, 1, false);
     post = new ConstStr("post", this, ";FF", 3);
+    *relay = relay_in;
 }
-MsgGetSpDirection::MsgGetSpDirection()
+MsgGetSpDirection::MsgGetSpDirection(int relay_in)
     : Message("MsgGetSpDirection")
 {
-    pre = new ConstStr("pre", this, "@253SD1?;FF", 11);
+    pre = new ConstStr("pre", this, "@253SD", 6);
+	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
+    post = new ConstStr("post", this, "?;FF", 4);
+    *relay = relay_in;
 }
-MsgSetSpDirection::MsgSetSpDirection()
+MsgSetSpDirection::MsgSetSpDirection(int relay_in)
     : Message("MsgSetSpDirection")
 {
-    pre = new ConstStr("pre", this, "@253SD1!", 8);
-    val = new TerminatedEnum("val", this, ";FF", "Below\0Above\0\0");
+    pre = new ConstStr("pre", this, "@253SD", 6);
+	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
+    pling = new ConstStr("pling", this, "!", 1);
+    val = new TerminatedEnum("val", this, ";FF", "BELOW\0ABOVE\0\0");
+    *relay = relay_in;
 }
 MsgReplySpDirection::MsgReplySpDirection()
     : Message("MsgReplySpDirection")
 {
     pre = new ConstStr("pre", this, "@253ACK", 7);
-    val = new TerminatedEnum("val", this, ";FF", "Below\0Above\0\0");
+    val = new TerminatedEnum("val", this, ";FF", "BELOW\0ABOVE\0\0");
 }
-MsgGetSpEnable::MsgGetSpEnable()
+MsgGetSpEnable::MsgGetSpEnable(int relay_in)
     : Message("MsgGetSpEnable")
 {
-    pre = new ConstStr("pre", this, "@253EN1?;FF", 11);
+    pre = new ConstStr("pre", this, "@253EN", 6);
+	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
+    post = new ConstStr("post", this, "?;FF", 4);
+    *relay = relay_in;
 }
-MsgSetSpEnable::MsgSetSpEnable()
+MsgSetSpEnable::MsgSetSpEnable(int relay_in)
     : Message("MsgSetSpEnable")
 {
-    pre = new ConstStr("pre", this, "@253EN1!", 8);
-    val = new TerminatedEnum("val", this, ";FF", "Off\0On\0\0");
+    pre = new ConstStr("pre", this, "@253EN", 6);
+	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
+    pling = new ConstStr("pling", this, "!", 1);
+    val = new TerminatedEnum("val", this, ";FF", "OFF\0ON\0\0");
+    *relay = relay_in;
 }
 MsgReplySpEnable::MsgReplySpEnable()
     : Message("MsgReplySpEnable")
 {
     pre = new ConstStr("pre", this, "@253ACK", 7);
-    val = new TerminatedEnum("val", this, ";FF", "Off\0On\0\0");
+    val = new TerminatedEnum("val", this, ";FF", "OFF\0ON\0\0");
 }
-MsgGetSpStatus::MsgGetSpStatus()
+MsgGetSpStatus::MsgGetSpStatus(int relay_in)
     : Message("MsgGetSpStatus")
-{
-    pre = new ConstStr("pre", this, "@253SS1?;FF", 11);
-}
+	{
+	//    pre = new ConstStr("pre", this, "@253SS1?;FF", 11);
+		pre = new ConstStr("pre", this, "@253SS", 6);
+		relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
+		post = new ConstStr("post", this, "?;FF", 4);
+		*relay = relay_in;
+	}
 MsgReplySpStatus::MsgReplySpStatus()
     : Message("MsgReplySpStatus")
 {
     pre = new ConstStr("pre", this, "@253ACK", 7);
     val = new TerminatedEnum("val", this, ";FF", "CLEAR\0SET\0\0");
 }
-//*!*Section messageDefinition end*!*
+
+MsgGetTransducerType::MsgGetTransducerType()
+    : Message("MsgGetTransducerType")
+	{
+    pre = new ConstStr("pre", this, "@253DT?;FF", 10);
+	}
+MsgReplyTransducerType::MsgReplyTransducerType()
+    : Message("MsgReplyTransducerType")
+	{
+    pre = new ConstStr("pre", this, "@253ACK", 7);
+    val = new TerminatedEnum("val", this, ";FF", "LOADLOCK\0DUALTRANS\0MicroPirani\0UniMag\0DualMag\0QuadMag\0\0");
+	}
+MsgGetTransducerStatus::MsgGetTransducerStatus()
+    : Message("MsgGetTransducerStatus")
+	{
+    pre = new ConstStr("pre", this, "@253T?;FF", 9);
+	}
+MsgReplyTransducerStatus::MsgReplyTransducerStatus()
+    : Message("MsgReplyTransducerStatus")
+	{
+	// The T command returns the MicroPirani sensor status as O for OK, M for MicroPirani fail or Z for Piezo fail
+    pre = new ConstStr("pre", this, "@253ACK", 7);
+    val = new TerminatedEnum("val", this, ";FF", "O\0M\0Z\0\0");
+	}
+
+MsgSetCCControl::MsgSetCCControl()
+    : Message("MsgSetCCControl")
+	{
+    pre = new ConstStr("pre", this, "@253FP!", 7);
+    val = new TerminatedEnum("val", this, ";FF", "OFF\0ON\0\0");
+	}
+MsgReplyCCControl::MsgReplyCCControl()
+    : Message("MsgReplyCCControl")
+	{
+    pre = new ConstStr("pre", this, "@253ACK", 7);
+    val = new TerminatedEnum("val", this, ";FF", "OFF\0ON\0\0");
+	}
+
+MsgSetGasType::MsgSetGasType()
+    : Message("MsgSetGasType")
+	{
+    pre = new ConstStr("pre", this, "@253GT!", 7);
+    val = new TerminatedEnum("val", this, ";FF", "NITROGEN\0AIR\0ARGON\0HELIUM\0HYDROGEN\0H2O\0NEON\0CO2\0XENON\0\0");
+	}
+MsgGetGasType::MsgGetGasType()
+    : Message("MsgGetGasType")
+	{
+    pre = new ConstStr("pre", this, "@253GT?;FF", 10);
+	}
+MsgReplyGasType::MsgReplyGasType()
+    : Message("MsgReplyGasType")
+	{
+    pre = new ConstStr("pre", this, "@253ACK", 7);
+    val = new TerminatedEnum("val", this, ";FF", "NITROGEN\0AIR\0ARGON\0HELIUM\0HYDROGEN\0H2O\0NEON\0CO2\0XENON\0\0");
+	}
+
+MsgSetLock::MsgSetLock()
+    : Message("MsgSetLock")
+	{
+    pre = new ConstStr("pre", this, "@253FD!", 7);
+    val = new TerminatedEnum("val", this, ";FF", "UNLOCK\0LOCK\0\0");
+	}
+MsgGetLock::MsgGetLock()
+    : Message("MsgGetLock")
+	{
+    pre = new ConstStr("pre", this, "@253FD?;FF", 10);
+	}
+MsgReplyLock::MsgReplyLock()
+    : Message("MsgReplyLock")
+	{
+    pre = new ConstStr("pre", this, "@253ACK", 7);
+    val = new TerminatedEnum("val", this, ";FF", "UNLOCK\0LOCK\0\0");
+	}
+
 
 /** Constructor for readThread.
   * \param[in] owner The owner object
@@ -238,61 +370,100 @@ mks9xx::mks9xx(const char* portName,
         asynInt32Mask | asynFloat64Mask | asynOctetMask,
         ASYN_CANBLOCK, /*ASYN_CANBLOCK=1, ASYN_MULTIDEVICE=0 */
         1, /*autoConnect*/ 0, /*default priority */ 0) /*default stack size*/
-{
+	{
     // Define the parameters
-    //*!*Section createParameter begin*!*
+
     createParam(nameConnection, asynParamInt32, &indexConnection);
-    createParam(nameAnalogueOutputFormat, asynParamInt32, &indexAnalogueOutputFormat);
+    createParam(nameAnalogueOutputFormat1, asynParamInt32, &indexAnalogueOutputFormat1);
+    createParam(nameAnalogueOutputFormat2, asynParamInt32, &indexAnalogueOutputFormat2);
     createParam(nameUnits, asynParamInt32, &indexUnits);
     createParam(nameUserTag, asynParamOctet, &indexUserTag);
-    createParam(nameTransducerType, asynParamOctet, &indexTransducerType);
     createParam(nameFirmwareVersion, asynParamOctet, &indexFirmwareVersion);
     createParam(nameHardwareVersion, asynParamOctet, &indexHardwareVersion);
     createParam(nameManufacturer, asynParamOctet, &indexManufacturer);
     createParam(nameModel, asynParamOctet, &indexModel);
-    createParam(namePressure, asynParamFloat64, &indexPressure);
+    createParam(namePressure1, asynParamFloat64, &indexPressure1);
+    createParam(namePressure2, asynParamFloat64, &indexPressure2);
+    createParam(namePressure3, asynParamFloat64, &indexPressure3);
+    createParam(namePressure4, asynParamFloat64, &indexPressure4);
+    createParam(namePressure5, asynParamFloat64, &indexPressure5);
     createParam(nameSerialNumber, asynParamOctet, &indexSerialNumber);
-    createParam(nameTimeOn, asynParamFloat64, &indexTimeOn);
+    createParam(nameTimeOn, asynParamInt32, &indexTimeOn);
     createParam(nameTransducerTemperature, asynParamFloat64, &indexTransducerTemperature);
-    createParam(nameSetPoint, asynParamFloat64, &indexSetPoint);
-    createParam(nameSetPointHysteresis, asynParamFloat64, &indexSetPointHysteresis);
-    createParam(nameSetPointDirection, asynParamInt32, &indexSetPointDirection);
-    createParam(nameSetPointEnable, asynParamInt32, &indexSetPointEnable);
-    createParam(nameSetPointState, asynParamInt32, &indexSetPointState);
-    //*!*Section createParameter end*!*
-    //*!*Section initParameter begin*!*
+    createParam(nameSetPoint1, asynParamFloat64, &indexSetPoint1);
+    createParam(nameSetPoint2, asynParamFloat64, &indexSetPoint2);
+    createParam(nameSetPoint3, asynParamFloat64, &indexSetPoint3);
+    createParam(nameSetPointHysteresis1, asynParamFloat64, &indexSetPointHysteresis1);
+    createParam(nameSetPointHysteresis2, asynParamFloat64, &indexSetPointHysteresis2);
+    createParam(nameSetPointHysteresis3, asynParamFloat64, &indexSetPointHysteresis3);
+    createParam(nameSetPointDirection1, asynParamInt32, &indexSetPointDirection1);
+    createParam(nameSetPointDirection2, asynParamInt32, &indexSetPointDirection2);
+    createParam(nameSetPointDirection3, asynParamInt32, &indexSetPointDirection3);
+    createParam(nameSetPointEnable1, asynParamInt32, &indexSetPointEnable1);
+    createParam(nameSetPointEnable2, asynParamInt32, &indexSetPointEnable2);
+    createParam(nameSetPointEnable3, asynParamInt32, &indexSetPointEnable3);
+    createParam(nameSetPointState1, asynParamInt32, &indexSetPointState1);
+    createParam(nameSetPointState2, asynParamInt32, &indexSetPointState2);
+    createParam(nameSetPointState3, asynParamInt32, &indexSetPointState3);
+    createParam(nameTransducerType, asynParamInt32, &indexTransducerType);
+    createParam(nameTransducerStatus, asynParamInt32, &indexTransducerStatus);
+    createParam(nameCCControl, asynParamInt32, &indexCCControl);
+    createParam(nameGasType, asynParamInt32, &indexGasType);
+    createParam(nameLock, asynParamInt32, &indexLock);
+
+
     setIntegerParam(indexConnection, 0);
-    setIntegerParam(indexAnalogueOutputFormat, 0);
+    setIntegerParam(indexAnalogueOutputFormat1, 0);
+    setIntegerParam(indexAnalogueOutputFormat2, 0);
     setIntegerParam(indexUnits, 0);
     setStringParam(indexUserTag, "");
-    setStringParam(indexTransducerType, "");
     setStringParam(indexFirmwareVersion, "");
     setStringParam(indexHardwareVersion, "");
     setStringParam(indexManufacturer, "");
     setStringParam(indexModel, "");
-    setDoubleParam(indexPressure, 0.0);
     setStringParam(indexSerialNumber, "");
-    setDoubleParam(indexTimeOn, 0.0);
+    setDoubleParam(indexPressure1, 0.0);
+    setDoubleParam(indexPressure2, 0.0);
+    setDoubleParam(indexPressure3, 0.0);
+    setDoubleParam(indexPressure4, 0.0);
+    setDoubleParam(indexPressure5, 0.0);
     setDoubleParam(indexTransducerTemperature, 0.0);
-    setDoubleParam(indexSetPoint, 0.0);
-    setDoubleParam(indexSetPointHysteresis, 0.0);
-    setIntegerParam(indexSetPointDirection, 0);
-    setIntegerParam(indexSetPointEnable, 0);
-    setIntegerParam(indexSetPointState, 0);
-    //*!*Section initParameter end*!*
+    setDoubleParam(indexSetPoint1, 0.0);
+    setDoubleParam(indexSetPoint2, 0.0);
+    setDoubleParam(indexSetPoint3, 0.0);
+    setDoubleParam(indexSetPointHysteresis1, 0.0);
+    setDoubleParam(indexSetPointHysteresis2, 0.0);
+    setDoubleParam(indexSetPointHysteresis3, 0.0);
+    setIntegerParam(indexTimeOn, 0);
+    setIntegerParam(indexSetPointDirection1, 0);
+    setIntegerParam(indexSetPointDirection2, 0);
+    setIntegerParam(indexSetPointDirection3, 0);
+    setIntegerParam(indexSetPointEnable1, 0);
+    setIntegerParam(indexSetPointEnable2, 0);
+    setIntegerParam(indexSetPointEnable3, 0);
+    setIntegerParam(indexSetPointState1, 0);
+    setIntegerParam(indexSetPointState2, 0);
+    setIntegerParam(indexSetPointState3, 0);
+    setIntegerParam(indexTransducerType, 0);
+    setIntegerParam(indexTransducerStatus, 0);
+    setIntegerParam(indexCCControl, 0);
+    setIntegerParam(indexGasType, 0);
+    setIntegerParam(indexLock, 0);
+
 
     // Connect to the serial port
     asynStatus asynRtn = pasynOctetSyncIO->connect(serialPortName,
         serialPortAddress, &this->serialPortUser, NULL);
     if(asynRtn != asynSuccess)
-    {
+    	{
         printf("Failed to connect to serial port=%s error=%d\n",
             serialPortName, asynRtn);
-    }
+    	}
     pasynOctetSyncIO->flush(this->serialPortUser);
 
-    //*!*Section protocolDefinition begin*!*
+
     protocolAnOutputFormat = new Protocol("protocolAnOutputFormat", this->serialPortUser);
+    //protocolAnOutputFormat->debug(5);
     protocolAnOutputFormat->addMessage(new MsgReplyAnOutputFormat);
     protocolAnOutputFormat->addMessage(new MsgFailReply);
     protocolUnit = new Protocol("protocolUnit", this->serialPortUser);
@@ -301,9 +472,6 @@ mks9xx::mks9xx(const char* portName,
     protocolUserTag = new Protocol("protocolUserTag", this->serialPortUser);
     protocolUserTag->addMessage(new MsgStringReply);
     protocolUserTag->addMessage(new MsgFailReply);
-    protocolTransducerType = new Protocol("protocolTransducerType", this->serialPortUser);
-    protocolTransducerType->addMessage(new MsgStringReply);
-    protocolTransducerType->addMessage(new MsgFailReply);
     protocolFirmwareVersion = new Protocol("protocolFirmwareVersion", this->serialPortUser);
     protocolFirmwareVersion->addMessage(new MsgStringReply);
     protocolFirmwareVersion->addMessage(new MsgFailReply);
@@ -323,42 +491,90 @@ mks9xx::mks9xx(const char* portName,
     protocolSerialNumber->addMessage(new MsgStringReply);
     protocolSerialNumber->addMessage(new MsgFailReply);
     protocolTimeOn = new Protocol("protocolTimeOn", this->serialPortUser);
-    protocolTimeOn->addMessage(new MsgFloatReply);
+    //protocolTimeOn->debug(5);
+    protocolTimeOn->addMessage(new MsgIntReply);
     protocolTimeOn->addMessage(new MsgFailReply);
     protocolTransducerTemperature = new Protocol("protocolTransducerTemperature", this->serialPortUser);
     protocolTransducerTemperature->addMessage(new MsgFloatReply);
     protocolTransducerTemperature->addMessage(new MsgFailReply);
     protocolSetPoint = new Protocol("protocolSetPoint", this->serialPortUser);
+    //protocolSetPoint->debug(5);
     protocolSetPoint->addMessage(new MsgFloatReply);
     protocolSetPoint->addMessage(new MsgFailReply);
     protocolHysteresis = new Protocol("protocolHysteresis", this->serialPortUser);
     protocolHysteresis->addMessage(new MsgFloatReply);
     protocolHysteresis->addMessage(new MsgFailReply);
     protocolSpDirection = new Protocol("protocolSpDirection", this->serialPortUser);
+    //protocolSpDirection->debug(5);
     protocolSpDirection->addMessage(new MsgReplySpDirection);
     protocolSpDirection->addMessage(new MsgFailReply);
     protocolSpEnable = new Protocol("protocolSpEnable", this->serialPortUser);
+    //protocolSpEnable->debug(5);
     protocolSpEnable->addMessage(new MsgReplySpEnable);
     protocolSpEnable->addMessage(new MsgFailReply);
     protocolSpStatus = new Protocol("protocolSpStatus", this->serialPortUser);
     protocolSpStatus->addMessage(new MsgReplySpStatus);
     protocolSpStatus->addMessage(new MsgFailReply);
-    //*!*Section protocolDefinition end*!*
+    protocolTransducerType = new Protocol("protocolTransducerType", this->serialPortUser);
+    //protocolTransducerType->debug(5);
+    protocolTransducerType->addMessage(new MsgReplyTransducerType);
+    protocolTransducerType->addMessage(new MsgFailReply);
+    protocolTransducerStatus = new Protocol("protocolTransducerStatus", this->serialPortUser);
+    protocolTransducerStatus->addMessage(new MsgReplyTransducerStatus);
+    protocolTransducerStatus->addMessage(new MsgFailReply);
+    protocolCCControl = new Protocol("protocolCCControl", this->serialPortUser);
+    protocolCCControl->addMessage(new MsgReplyCCControl);
+    protocolCCControl->addMessage(new MsgFailReply);
+    protocolGasType = new Protocol("protocolGasType", this->serialPortUser);
+    protocolGasType->debug(5);
+    protocolGasType->addMessage(new MsgReplyGasType);
+    protocolGasType->addMessage(new MsgFailReply);
+    protocolLock = new Protocol("protocolLock", this->serialPortUser);
+    protocolLock->addMessage(new MsgReplyLock);
+    protocolLock->addMessage(new MsgFailReply);
+
+
+    //Protocol::debug("protocolPressure", 5);
+
+    // Instantiate the three relay setpoint messages
+    for (int i = 0; i < NUM_RELAYS; i++)
+    	{
+        msgSetSetpoint[i] = new MsgSetSetpoint(i+1);
+        msgGetSetpoint[i] = new MsgGetSetpoint(i+1);
+        msgGetSpStatus[i] = new MsgGetSpStatus(i+1);
+        msgGetHysteresis[i]  = new MsgGetHysteresis(i+1);
+        msgSetHysteresis[i]  = new MsgSetHysteresis(i+1);
+        msgSetSpDirection[i] = new MsgSetSpDirection(i+1);
+        msgSetSpEnable[i]    = new MsgSetSpEnable(i+1);
+        msgGetSpDirection[i] = new MsgGetSpDirection(i+1);
+        msgGetSpEnable[i]    = new MsgGetSpEnable(i+1);
+    	}
     
+    // Instantiate the five sensor pressure reading messages
+    for (int i = 0; i < NUM_SENSORS; i++)
+    	{
+        msgPressure[i] = new MsgGetPressure(i+1);
+    	}
+
+    for (int i = 0; i < NUM_AOCHANS; i++)
+    	{
+    	msgGetAnOutputFormat[i] = new MsgGetAnOutputFormat(i+1);
+    	msgSetAnOutputFormat[i] = new MsgSetAnOutputFormat(i+1);
+    	}
+
     // Start the thread
     readIt = new ReadThread(this);
-}
+	}
 
 /** Destructor.
 */
 mks9xx::~mks9xx()
-{
+	{
     delete readIt;
-    //*!*Section protocolDestruction begin*!*
+
     delete protocolAnOutputFormat;
     delete protocolUnit;
     delete protocolUserTag;
-    delete protocolTransducerType;
     delete protocolFirmwareVersion;
     delete protocolHardwareVersion;
     delete protocolManufacturer;
@@ -372,17 +588,43 @@ mks9xx::~mks9xx()
     delete protocolSpDirection;
     delete protocolSpEnable;
     delete protocolSpStatus;
-    //*!*Section protocolDestruction end*!*
-}
+    delete protocolTransducerType;
+    delete protocolTransducerStatus;
+    delete protocolCCControl;
+    delete protocolGasType;
+
+    for (int i = 0; i < NUM_RELAYS; i++)
+    	{
+    	delete msgSetSetpoint[i];
+    	delete msgGetSetpoint[i];
+    	delete msgGetSpStatus[i];
+    	delete msgSetHysteresis[i];
+    	delete msgSetSpDirection[i];
+    	delete msgSetSpEnable[i];
+    	delete msgGetHysteresis[i];
+    	delete msgGetSpDirection[i];
+    	delete msgGetSpEnable[i];
+    	}
+    for (int i = 0; i < NUM_SENSORS; i++)
+    	{
+    	delete msgPressure[i];
+    	}
+
+    for (int i = 0; i < NUM_AOCHANS; i++)
+    	{
+    	delete msgGetAnOutputFormat[i];
+    	delete msgSetAnOutputFormat[i];
+    	}
+	}
 
 /** This function will be run for the read thread.
   * Receive data from the device.
   */
 void mks9xx::readRun()
-{
+	{
     // Forever...
     while(true)
-    {
+    	{
         // Wait for next poll
         epicsThreadSleep(pollPeriod);
         // Get the connection state
@@ -391,49 +633,92 @@ void mks9xx::readRun()
         this->getIntegerParam(indexConnection, &connected);
         this->unlock();
         // Poll the pressure
-        bool ok = getFloat(protocolPressure, &msgPressure, indexPressure);
+        bool ok = getFloat(protocolPressure, msgPressure[0], indexPressure1);
+        asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW, "readRun\n");
         if(!ok && connected)
-        {
+        	{
+            printf("MKS9xx asyn driver: Device Disonnected");
+            asynPrint(this->pasynUserSelf, ASYN_TRACEIO_DEVICE, "Device disconnected\n");
             // Device became disconnected
             this->lock();
             this->setIntegerParam(indexConnection, 0);
             this->unlock();
-        }
+        	}
         else if(ok && !connected)
-        {
+        	{
             // Device became connected
+            printf("MKS9xx asyn driver: Device Connected");
+            asynPrint(this->pasynUserSelf, ASYN_TRACEIO_DEVICE, "Device Connected\n");
             this->lock();
             this->setIntegerParam(indexConnection, 1);
             this->unlock();
             // Read all the once only stuff
-            getString(protocolTransducerType, &msgTransducerType, indexTransducerType);
+            getTransducerType(protocolTransducerType, &msgTransducerType, indexTransducerType);
             getString(protocolFirmwareVersion, &msgFirmwareVersion, indexFirmwareVersion);
             getString(protocolHardwareVersion, &msgHardwareVersion, indexHardwareVersion);
             getString(protocolManufacturer, &msgManufacturer, indexManufacturer);
             getString(protocolModel, &msgModel, indexModel);
             getString(protocolSerialNumber, &msgSerialNumber, indexSerialNumber);
             getString(protocolUserTag, &msgUserTag, indexUserTag);
+            getString(protocolLock, &msgGetLock, indexLock);
+            getUnit(protocolUnit, &msgGetUnit, indexUnits);
+            getGasType(protocolGasType, &msgGetGasType, indexGasType);
+
+            for (int i = 0; i < NUM_RELAYS; i++)
+            	{
+				getFloat(protocolSetPoint, msgGetSetpoint[i], indexSetPoint1+i);
+				getFloat(protocolHysteresis, msgGetHysteresis[i], indexSetPointHysteresis1+i);
+				getSpEnable(protocolSpEnable, msgGetSpEnable[i], indexSetPointEnable1+i);
+				getSpDirection(protocolSpDirection, msgGetSpDirection[i], indexSetPointDirection1+i);
+            	}
+
+            for (int i = 0; i < NUM_AOCHANS; i++)
+            	{
+            	getAnOutputFormat(protocolAnOutputFormat, msgGetAnOutputFormat[i], indexAnalogueOutputFormat1+i);
+            	}
+
             // Send the current configuration
+            /*
             setInt(protocolAnOutputFormat, &msgAnOutputFormat, msgAnOutputFormat.val, indexAnalogueOutputFormat);
-            setFloat(protocolHysteresis, &msgHysteresis, msgHysteresis.val, indexSetPointHysteresis);
-            setFloat(protocolSetPoint, &msgSetPoint, msgSetPoint.val, indexSetPoint);
-            setInt(protocolSpDirection, &msgSpDirection, msgSpDirection.val, indexSetPointDirection);
-            setInt(protocolSpEnable, &msgSpEnable, msgSpEnable.val, indexSetPointEnable);
-            setInt(protocolUnit, &msgUnit, msgUnit.val, indexUnits);
-        }
+            setFloat(protocolHysteresis, msgSetHysteresis[0], msgSetHysteresis[0]->val, indexSetPointHysteresis1);
+            setFloat(protocolHysteresis, msgSetHysteresis[1], msgSetHysteresis[1]->val, indexSetPointHysteresis2);
+            setFloat(protocolHysteresis, msgSetHysteresis[2], msgSetHysteresis[2]->val, indexSetPointHysteresis3);
+            setFloat(protocolSetPoint, msgSetSetpoint[0], msgSetSetpoint[0]->val, indexSetPoint1);
+            setFloat(protocolSetPoint, msgSetSetpoint[1], msgSetSetpoint[1]->val, indexSetPoint2);
+            setFloat(protocolSetPoint, msgSetSetpoint[2], msgSetSetpoint[2]->val, indexSetPoint3);
+            setInt(protocolSpDirection, msgSetSpDirection[0], msgSetSpDirection[0]->val, indexSetPointDirection1);
+            setInt(protocolSpDirection, msgSetSpDirection[1], msgSetSpDirection[1]->val, indexSetPointDirection2);
+            setInt(protocolSpDirection, msgSetSpDirection[2], msgSetSpDirection[2]->val, indexSetPointDirection3);
+            setInt(protocolSpEnable, msgSetSpEnable[0], msgSetSpEnable[0]->val, indexSetPointEnable1);
+            setInt(protocolSpEnable, msgSetSpEnable[1], msgSetSpEnable[1]->val, indexSetPointEnable2);
+            setInt(protocolSpEnable, msgSetSpEnable[2], msgSetSpEnable[2]->val, indexSetPointEnable3);
+            setInt(protocolUnit, &msgSetUnit, msgSetUnit.val, indexUnits);
+            */
+        	}
         if(ok)
-        {
+        	{
             // Poll the rest of the parameters
-            getFloat(protocolTimeOn, &msgTimeOn, indexTimeOn);
+            getInt(protocolTimeOn, &msgTimeOn, indexTimeOn);
             getFloat(protocolTransducerTemperature, &msgTransducerTemperature, indexTransducerTemperature);
-            getSpStatus(protocolSpStatus, &msgSpStatus, indexSetPointState);
-        }
+            getSpStatus(protocolSpStatus, msgGetSpStatus[0], indexSetPointState1);
+            getSpStatus(protocolSpStatus, msgGetSpStatus[1], indexSetPointState2);
+            getSpStatus(protocolSpStatus, msgGetSpStatus[2], indexSetPointState3);
+            getTransducerStatus(protocolTransducerStatus, &msgTransducerStatus, indexTransducerStatus);
+
+            // Already have pressure1 from outer conditional, so get remaining 4
+            getFloat(protocolPressure, msgPressure[1], indexPressure2);
+            getFloat(protocolPressure, msgPressure[2], indexPressure3);
+            getFloat(protocolPressure, msgPressure[3], indexPressure4);
+            getFloat(protocolPressure, msgPressure[4], indexPressure5);
+
+            //getGasType(protocolGasType, &msgGetGasType, indexGasType);
+        	}
         // Tell EPICS
         this->lock();
         this->callParamCallbacks();
         this->unlock();
-    }
-}
+    	}
+	}
 
 /** Sends a set message to the device containing an integer parameter.
  *  \param[in] protocol The set of return messages
@@ -451,6 +736,15 @@ bool mks9xx::setInt(Protocol* protocol, Message* cmd, TerminatedEnum* valField, 
     *valField = val;
     return protocol->transceive(cmd) != NULL;
 }
+bool mks9xx::setInt(Protocol* protocol, Message* cmd, TextInt<epicsInt32>* valField, int handle)
+	{
+    int val;
+    lock();
+    getIntegerParam(handle, &val);
+    unlock();
+    *valField = val;
+    return protocol->transceive(cmd) != NULL;
+	}
 
 /** Sends a set message to the device containing an integer parameter.
  *  \param[in] protocol The set of return messages
@@ -541,6 +835,28 @@ bool mks9xx::getFloat(Protocol* protocol, Message* cmd, int handle)
  *  \param[in] handle The index of the asyn parameter
  *  \return True for success
  */
+bool mks9xx::getInt(Protocol* protocol, Message* cmd, int handle)
+{
+    bool result = false;
+    Message* msg = protocol->transceive(cmd);
+    if(protocol->isMessageKind<MsgIntReply>(msg))
+    {
+        MsgIntReply* reply = dynamic_cast<MsgIntReply*>(msg);
+        lock();
+        setIntegerParam(handle, *reply->val);
+        unlock();
+        result = true;
+    }
+    return result;
+}
+
+/** Sends a get message to the device and places the float result in the
+ *  asyn parameter.
+ *  \param[in] protocol The set of return messages
+ *  \param[in] cmd The message to send
+ *  \param[in] handle The index of the asyn parameter
+ *  \return True for success
+ */
 bool mks9xx::getSpStatus(Protocol* protocol, Message* cmd, int handle)
 {
     bool result = false;
@@ -556,55 +872,200 @@ bool mks9xx::getSpStatus(Protocol* protocol, Message* cmd, int handle)
     return result;
 }
 
+/** Sends a get message to the device and places the float result in the
+ *  asyn parameter.
+ *  \param[in] protocol The set of return messages
+ *  \param[in] cmd The message to send
+ *  \param[in] handle The index of the asyn parameter
+ *  \return True for success
+ */
+bool mks9xx::getTransducerStatus(Protocol* protocol, Message* cmd, int handle)
+{
+    bool result = false;
+    Message* msg = protocol->transceive(cmd);
+    if(protocol->isMessageKind<MsgReplyTransducerStatus>(msg))
+    {
+        MsgReplyTransducerStatus* reply = dynamic_cast<MsgReplyTransducerStatus*>(msg);
+        lock();
+        setIntegerParam(handle, *reply->val);
+        unlock();
+        result = true;
+    }
+    return result;
+}
+
+/** Sends a get message to the device and places the float result in the
+ *  asyn parameter.
+ *  \param[in] protocol The set of return messages
+ *  \param[in] cmd The message to send
+ *  \param[in] handle The index of the asyn parameter
+ *  \return True for success
+ */
+bool mks9xx::getTransducerType(Protocol* protocol, Message* cmd, int handle)
+{
+    bool result = false;
+    Message* msg = protocol->transceive(cmd);
+    if(protocol->isMessageKind<MsgReplyTransducerType>(msg))
+    {
+        MsgReplyTransducerType* reply = dynamic_cast<MsgReplyTransducerType*>(msg);
+        lock();
+        setIntegerParam(handle, *reply->val);
+        unlock();
+        result = true;
+    }
+    return result;
+}
+
+bool mks9xx::getUnit(Protocol* protocol, Message* cmd, int handle)
+{
+    bool result = false;
+    Message* msg = protocol->transceive(cmd);
+    if(protocol->isMessageKind<MsgReplyUnit>(msg))
+    {
+        MsgReplyUnit* reply = dynamic_cast<MsgReplyUnit*>(msg);
+        lock();
+        setIntegerParam(handle, *reply->val);
+        unlock();
+        result = true;
+    }
+    return result;
+}
+
+bool mks9xx::getGasType(Protocol* protocol, Message* cmd, int handle)
+{
+    bool result = false;
+    Message* msg = protocol->transceive(cmd);
+    if(protocol->isMessageKind<MsgReplyGasType>(msg))
+    {
+        MsgReplyGasType* reply = dynamic_cast<MsgReplyGasType*>(msg);
+        lock();
+        setIntegerParam(handle, *reply->val);
+        unlock();
+        result = true;
+    }
+    return result;
+}
+
+bool mks9xx::getSpEnable(Protocol* protocol, Message* cmd, int handle)
+{
+    bool result = false;
+    Message* msg = protocol->transceive(cmd);
+    if(protocol->isMessageKind<MsgReplySpEnable>(msg))
+    {
+        MsgReplySpEnable* reply = dynamic_cast<MsgReplySpEnable*>(msg);
+        lock();
+        setIntegerParam(handle, *reply->val);
+        unlock();
+        result = true;
+    }
+    return result;
+}
+
+bool mks9xx::getSpDirection(Protocol* protocol, Message* cmd, int handle)
+{
+    bool result = false;
+    Message* msg = protocol->transceive(cmd);
+    if(protocol->isMessageKind<MsgReplySpDirection>(msg))
+    {
+        MsgReplySpDirection* reply = dynamic_cast<MsgReplySpDirection*>(msg);
+        lock();
+        setIntegerParam(handle, *reply->val);
+        unlock();
+        result = true;
+    }
+    return result;
+}
+
+bool mks9xx::getAnOutputFormat(Protocol* protocol, Message* cmd, int handle)
+{
+    bool result = false;
+    Message* msg = protocol->transceive(cmd);
+    if(protocol->isMessageKind<MsgReplyAnOutputFormat>(msg))
+    {
+    	MsgReplyAnOutputFormat* reply = dynamic_cast<MsgReplyAnOutputFormat*>(msg);
+        lock();
+        setIntegerParam(handle, *reply->val);
+        unlock();
+        result = true;
+    }
+    return result;
+}
+
 /** Called when asyn clients call pasynInt32->write().
   * \param[in] pasynUser pasynUser structure that encodes the reason and address.
   * \param[in] value Value to write. */
 asynStatus mks9xx::writeInt32(asynUser *pasynUser, epicsInt32 value)
-{
+	{
     // Base class does most of the work including setting the parameter library
     asynStatus result = asynPortDriver::writeInt32(pasynUser, value);
 
     // Send commands that control configuration.
     int parameter = pasynUser->reason;
-    if(parameter == indexAnalogueOutputFormat)
-    {
-        setInt(protocolAnOutputFormat, &msgAnOutputFormat, msgAnOutputFormat.val, indexAnalogueOutputFormat);
-    }
-    else if(parameter == indexSetPointDirection)
-    {
-        setInt(protocolSpDirection, &msgSpDirection, msgSpDirection.val, indexSetPointDirection);
-    }
-    else if(parameter == indexSetPointEnable)
-    {
-        setInt(protocolSpEnable, &msgSpEnable, msgSpEnable.val, indexSetPointEnable);
-    }
+    if ((parameter >= indexAnalogueOutputFormat1) && (parameter <= indexAnalogueOutputFormat2))
+    	{
+    	int iChannel = parameter - indexAnalogueOutputFormat1;
+        setInt(protocolAnOutputFormat, msgSetAnOutputFormat[iChannel], msgSetAnOutputFormat[iChannel]->val, parameter);
+    	}
+    else if((parameter >= indexSetPointDirection1) && (parameter <= indexSetPointDirection3))
+    	{
+    	int iRelay = parameter - indexSetPointDirection1;
+        setInt(protocolSpDirection, msgSetSpDirection[iRelay], msgSetSpDirection[iRelay]->val, parameter);
+    	}
+    else if((parameter >= indexSetPointEnable1) && (parameter <= indexSetPointEnable3))
+    	{
+    	int iRelay = parameter - indexSetPointEnable1;
+        setInt(protocolSpEnable, msgSetSpEnable[iRelay], msgSetSpEnable[iRelay]->val, parameter);
+    	}
     else if(parameter == indexUnits)
-    {
-        setInt(protocolUnit, &msgUnit, msgUnit.val, indexUnits);
-    }
+    	{
+        setInt(protocolUnit, &msgSetUnit, msgSetUnit.val, indexUnits);
+    	}
+    else if(parameter == indexCCControl)
+    	{
+        setInt(protocolCCControl, &msgCCControl, msgCCControl.val, indexCCControl);
+    	}
+    else if(parameter == indexGasType)
+    	{
+        printf("writeInt32: Gas Type");
+        setInt(protocolGasType, &msgSetGasType, msgSetGasType.val, indexGasType);
+    	}
+    else if(parameter == indexLock)
+    	{
+        setInt(protocolLock, &msgSetLock, msgSetLock.val, indexLock);
+    	}
     return result;
-}
+	}
 
 /** Called when asyn clients call pasynFloat64->write().
   * \param[in] pasynUser pasynUser structure that encodes the reason and address.
   * \param[in] value Value to write. */
 asynStatus mks9xx::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
-{
+	{
     // Base class does most of the work including setting the parameter library
     asynStatus result = asynPortDriver::writeFloat64(pasynUser, value);
 
     // Send commands that control configuration.
     int parameter = pasynUser->reason;
-    if(parameter == indexSetPointHysteresis)
-    {
-        setFloat(protocolHysteresis, &msgHysteresis, msgHysteresis.val, indexSetPointHysteresis);
-    }
-    else if(parameter == indexSetPoint)
-    {
-        setFloat(protocolSetPoint, &msgSetPoint, msgSetPoint.val, indexSetPoint);
-    }
+    if((parameter >= indexSetPointHysteresis1) && (parameter <= indexSetPointHysteresis3))
+    	{
+    	int iRelay = parameter - indexSetPointHysteresis1;
+        setFloat(protocolHysteresis, msgSetHysteresis[iRelay], msgSetHysteresis[iRelay]->val, parameter);
+    	}
+    else if(parameter == indexSetPoint1)
+    	{
+        setFloat(protocolSetPoint, msgSetSetpoint[0], msgSetSetpoint[0]->val, indexSetPoint1);
+        //asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW, "writeFloat64(): SETPOINT1 - returned from setFloat\n");
+    	}
+    else if(parameter == indexSetPoint2)
+    	{
+        setFloat(protocolSetPoint, msgSetSetpoint[1], msgSetSetpoint[1]->val, indexSetPoint2);
+    	}
+    else if(parameter == indexSetPoint3)
+    	{
+        setFloat(protocolSetPoint, msgSetSetpoint[2], msgSetSetpoint[2]->val, indexSetPoint3);
+    	}
     return result;
-}
+	}
 
 /** Called when asyn clients call pasynOctet->write().
   * \param[in] pasynUser pasynUser structure that encodes the reason and address.
