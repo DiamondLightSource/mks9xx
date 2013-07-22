@@ -110,10 +110,12 @@ record(stringin, "$(P):USERTAG_RBV")
 # %archiver 10 Monitor
 # %autosave 2 VAL
 record(stringout, "$(P):USERTAG")
-{
-  field(DTYP, "asynOctetWrite")
-  field(OUT,  "@asyn($(PORT),0,5)USERTAG")
-}
+    {
+    field(DTYP, "asynOctetWrite")
+    field(OUT,  "@asyn($(PORT),0,5)USERTAG")
+    field(VAL, "$(P)")
+    field(PINI, "YES")
+    }
 record(stringin, "$(P):FIRMWAREVERSION_RBV")
 {
   field(SCAN, "I/O Intr")
@@ -606,4 +608,12 @@ record(mbbi, "$(P):LOCK_RBV")
     field(ONST, "Lock")
     }
 
+# %archiver 10 Monitor
+record(ai, "$(P):CCDOSE_RBV")
+    {
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),0,5)CCDOSE")
+    field(PREC, "2")
+    }
    

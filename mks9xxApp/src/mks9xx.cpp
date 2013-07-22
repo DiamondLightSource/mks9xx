@@ -47,6 +47,7 @@ const char* mks9xx::nameTransducerStatus      = "TRANSDUCERSTATUS";
 const char* mks9xx::nameCCControl             = "CCCON";
 const char* mks9xx::nameGasType               = "GASTYPE";
 const char* mks9xx::nameLock                  = "LOCK";
+const char* mks9xx::nameCCPressureDose        = "CCDOSE";
 
 #define NUM_PARAMS (&LAST_PARAM - &FIRST_PARAM - 1)
 const double mks9xx::pollPeriod = 1.0;
@@ -348,6 +349,13 @@ MsgReplyLock::MsgReplyLock()
 	}
 
 
+MsgGetCCPressureDose::MsgGetCCPressureDose()
+    : Message("MsgGetCCPressureDose")
+	{
+    pre = new ConstStr("pre", this, "@253TIM3?;FF", 12);
+	}
+
+
 /** Constructor for readThread.
   * \param[in] owner The owner object
   */
@@ -410,6 +418,7 @@ mks9xx::mks9xx(const char* portName,
     createParam(nameCCControl, asynParamInt32, &indexCCControl);
     createParam(nameGasType, asynParamInt32, &indexGasType);
     createParam(nameLock, asynParamInt32, &indexLock);
+    createParam(nameCCPressureDose, asynParamFloat64, &indexCCPressureDose);
 
 
     setIntegerParam(indexConnection, 0);
@@ -434,6 +443,7 @@ mks9xx::mks9xx(const char* portName,
     setDoubleParam(indexSetPointHysteresis1, 0.0);
     setDoubleParam(indexSetPointHysteresis2, 0.0);
     setDoubleParam(indexSetPointHysteresis3, 0.0);
+    setDoubleParam(indexCCPressureDose, 0.0);
     setIntegerParam(indexTimeOn, 0);
     setIntegerParam(indexSetPointDirection1, 0);
     setIntegerParam(indexSetPointDirection2, 0);
@@ -526,12 +536,16 @@ mks9xx::mks9xx(const char* portName,
     protocolCCControl->addMessage(new MsgReplyCCControl);
     protocolCCControl->addMessage(new MsgFailReply);
     protocolGasType = new Protocol("protocolGasType", this->serialPortUser);
-    protocolGasType->debug(5);
+    //protocolGasType->debug(5);
     protocolGasType->addMessage(new MsgReplyGasType);
     protocolGasType->addMessage(new MsgFailReply);
     protocolLock = new Protocol("protocolLock", this->serialPortUser);
     protocolLock->addMessage(new MsgReplyLock);
     protocolLock->addMessage(new MsgFailReply);
+    protocolCCPressureDose = new Protocol("protocolCCPressureDose", this->serialPortUser);
+    protocolCCPressureDose->debug(5);
+    protocolCCPressureDose->addMessage(new MsgFloatReply);
+    protocolCCPressureDose->addMessage(new MsgFailReply);
 
 
     //Protocol::debug("protocolPressure", 5);
@@ -561,6 +575,8 @@ mks9xx::mks9xx(const char* portName,
     	msgGetAnOutputFormat[i] = new MsgGetAnOutputFormat(i+1);
     	msgSetAnOutputFormat[i] = new MsgSetAnOutputFormat(i+1);
     	}
+
+    this->transducerType = TT_UNDEFINED; // Until we beat the information out of the device!
 
     // Start the thread
     readIt = new ReadThread(this);
@@ -676,24 +692,6 @@ void mks9xx::readRun()
             	{
             	getAnOutputFormat(protocolAnOutputFormat, msgGetAnOutputFormat[i], indexAnalogueOutputFormat1+i);
             	}
-
-            // Send the current configuration
-            /*
-            setInt(protocolAnOutputFormat, &msgAnOutputFormat, msgAnOutputFormat.val, indexAnalogueOutputFormat);
-            setFloat(protocolHysteresis, msgSetHysteresis[0], msgSetHysteresis[0]->val, indexSetPointHysteresis1);
-            setFloat(protocolHysteresis, msgSetHysteresis[1], msgSetHysteresis[1]->val, indexSetPointHysteresis2);
-            setFloat(protocolHysteresis, msgSetHysteresis[2], msgSetHysteresis[2]->val, indexSetPointHysteresis3);
-            setFloat(protocolSetPoint, msgSetSetpoint[0], msgSetSetpoint[0]->val, indexSetPoint1);
-            setFloat(protocolSetPoint, msgSetSetpoint[1], msgSetSetpoint[1]->val, indexSetPoint2);
-            setFloat(protocolSetPoint, msgSetSetpoint[2], msgSetSetpoint[2]->val, indexSetPoint3);
-            setInt(protocolSpDirection, msgSetSpDirection[0], msgSetSpDirection[0]->val, indexSetPointDirection1);
-            setInt(protocolSpDirection, msgSetSpDirection[1], msgSetSpDirection[1]->val, indexSetPointDirection2);
-            setInt(protocolSpDirection, msgSetSpDirection[2], msgSetSpDirection[2]->val, indexSetPointDirection3);
-            setInt(protocolSpEnable, msgSetSpEnable[0], msgSetSpEnable[0]->val, indexSetPointEnable1);
-            setInt(protocolSpEnable, msgSetSpEnable[1], msgSetSpEnable[1]->val, indexSetPointEnable2);
-            setInt(protocolSpEnable, msgSetSpEnable[2], msgSetSpEnable[2]->val, indexSetPointEnable3);
-            setInt(protocolUnit, &msgSetUnit, msgSetUnit.val, indexUnits);
-            */
         	}
         if(ok)
         	{
@@ -711,7 +709,11 @@ void mks9xx::readRun()
             getFloat(protocolPressure, msgPressure[3], indexPressure4);
             getFloat(protocolPressure, msgPressure[4], indexPressure5);
 
-            //getGasType(protocolGasType, &msgGetGasType, indexGasType);
+            // Cold Cathode pressure dose is only available for the following transducer types
+            if ((this->transducerType == TT_UNIMAG) || (this->transducerType == TT_DUALMAG) || (this->transducerType == TT_QUADMAG))
+				{
+				getFloat(protocolCCPressureDose, &msgGetCCPressureDose, indexCCPressureDose);
+				}
         	}
         // Tell EPICS
         this->lock();
@@ -911,6 +913,8 @@ bool mks9xx::getTransducerType(Protocol* protocol, Message* cmd, int handle)
         lock();
         setIntegerParam(handle, *reply->val);
         unlock();
+        // Transducer type will not change, so cache it locally for future reference.
+        this->transducerType = *reply->val;
         result = true;
     }
     return result;
@@ -999,6 +1003,7 @@ asynStatus mks9xx::writeInt32(asynUser *pasynUser, epicsInt32 value)
     // Base class does most of the work including setting the parameter library
     asynStatus result = asynPortDriver::writeInt32(pasynUser, value);
 
+    lock();
     // Send commands that control configuration.
     int parameter = pasynUser->reason;
     if ((parameter >= indexAnalogueOutputFormat1) && (parameter <= indexAnalogueOutputFormat2))
@@ -1033,6 +1038,7 @@ asynStatus mks9xx::writeInt32(asynUser *pasynUser, epicsInt32 value)
     	{
         setInt(protocolLock, &msgSetLock, msgSetLock.val, indexLock);
     	}
+    unlock();
     return result;
 	}
 
@@ -1044,6 +1050,7 @@ asynStatus mks9xx::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
     // Base class does most of the work including setting the parameter library
     asynStatus result = asynPortDriver::writeFloat64(pasynUser, value);
 
+    lock();
     // Send commands that control configuration.
     int parameter = pasynUser->reason;
     if((parameter >= indexSetPointHysteresis1) && (parameter <= indexSetPointHysteresis3))
@@ -1064,6 +1071,7 @@ asynStatus mks9xx::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
     	{
         setFloat(protocolSetPoint, msgSetSetpoint[2], msgSetSetpoint[2]->val, indexSetPoint3);
     	}
+    unlock();
     return result;
 	}
 
@@ -1073,19 +1081,21 @@ asynStatus mks9xx::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
   * \param[in] maxChars Max characters to be written
   * \param[out] nActual Number of characters actually written */
 asynStatus mks9xx::writeOctet(asynUser *pasynUser, const char *value, size_t maxChars, size_t *nActual)
-{
+	{
     // Base class does most of the work including setting the parameter library
     asynStatus result = asynPortDriver::writeOctet(pasynUser, value, maxChars, nActual);
 
+    lock();
     // Send commands that control configuration.
     int parameter = pasynUser->reason;
     if(parameter == indexUserTag)
-    {
+    	{
         setString(protocolUserTag, &msgSetUserTag, msgSetUserTag.val, indexUserTag);
         getString(protocolUserTag, &msgUserTag, indexUserTag);
-    }
+    	}
+    unlock();
     return result;
-}
+	}
 
 /** Configuration command, called directly or from iocsh.
   * \param[in] portName The name of this asyn port.

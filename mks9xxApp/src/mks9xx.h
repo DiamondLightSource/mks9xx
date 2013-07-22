@@ -344,6 +344,12 @@ class MsgReplyLock: public Message
 		ConstStr* pre;
 		TerminatedEnum* val;
 	};
+class MsgGetCCPressureDose: public Message
+	{
+	public:
+		MsgGetCCPressureDose();
+		ConstStr* pre;
+	};
 
 
 class mks9xx : public asynPortDriver
@@ -383,6 +389,7 @@ private:
     enum {SetPointEnable_Disable=0, SetPointEnable_Enable};
     enum {SetPointState_Clear=0, SetPointState_Set};
     enum {CCState_Off=0, CCState_On};
+    enum {TT_UNDEFINED=-1, TT_LOADLOCK=0, TT_DUALTRANS, TT_MICROPIRANI, TT_UNIMAG, TT_DUALMAG, TT_QUADMAG}; // Transducer types
 
     static const int NUM_RELAYS  = 3; // Setpoint relays
     static const int NUM_SENSORS = 5; // Pressure sensors
@@ -425,6 +432,7 @@ private:
     static const char* nameCCControl;
     static const char* nameGasType;
     static const char* nameLock;
+    static const char* nameCCPressureDose;
 
     int FIRST_PARAM;
 
@@ -465,6 +473,7 @@ private:
     int indexCCControl;
     int indexGasType;
     int indexLock;
+    int indexCCPressureDose;
 
     int LAST_PARAM;
 
@@ -489,6 +498,7 @@ private:
     Protocol* protocolCCControl;
     Protocol* protocolGasType;
     Protocol* protocolLock;
+    Protocol* protocolCCPressureDose;
 
     asynUser* 					serialPortUser;
     ReadThread* 				readIt;
@@ -524,6 +534,11 @@ private:
     MsgGetGasType 	    		msgGetGasType;
     MsgSetLock 	    			msgSetLock;
     MsgGetLock 	    			msgGetLock;
+    MsgGetCCPressureDose		msgGetCCPressureDose;
+
+    // Gauge one-time descriptors
+    int							transducerType;
+
 
     // Helper functions
 private:
