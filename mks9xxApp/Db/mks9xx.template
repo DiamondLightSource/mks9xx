@@ -617,3 +617,24 @@ record(ai, "$(P):CCDOSE_RBV")
     field(PREC, "2")
     }
    
+################################################################################
+# Status
+#
+#% archiver 10 Monitor
+#
+record(mbbi, "$(P):STA") 
+    {
+    field(DTYP, "Soft Channel")
+    field(DTYP, "asynInt32")
+    field(INP, "@asyn($(PORT),0,5)STA")
+    field(SCAN, "I/O Intr")
+    field(DESC, "Status")
+    field(ZRST, "OK")
+    field(ONST, "Not Connected")
+    field(TWST, "Transducer fault")
+    field(UNSV, "MAJOR")
+    field(ZRSV, "NO_ALARM")
+    field(ONSV, "MAJOR")
+    field(TWSV, "MAJOR")
+    }
+   

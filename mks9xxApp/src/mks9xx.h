@@ -390,6 +390,7 @@ private:
     enum {SetPointState_Clear=0, SetPointState_Set};
     enum {CCState_Off=0, CCState_On};
     enum {TT_UNDEFINED=-1, TT_LOADLOCK=0, TT_DUALTRANS, TT_MICROPIRANI, TT_UNIMAG, TT_DUALMAG, TT_QUADMAG}; // Transducer types
+    enum {STA_FAULT = -1, STA_OK = 0, STA_NOTCONNECTED = 1, STA_TRANSFAULT = 2}; // :STA enumerators
 
     static const int NUM_RELAYS  = 3; // Setpoint relays
     static const int NUM_SENSORS = 5; // Pressure sensors
@@ -433,6 +434,7 @@ private:
     static const char* nameGasType;
     static const char* nameLock;
     static const char* nameCCPressureDose;
+    static const char* nameSTA;
 
     int FIRST_PARAM;
 
@@ -474,6 +476,7 @@ private:
     int indexGasType;
     int indexLock;
     int indexCCPressureDose;
+    int indexSTA;
 
     int LAST_PARAM;
 
@@ -557,6 +560,7 @@ private:
     bool getSpEnable(Protocol* protocol, Message* cmd, int handle);
     bool getSpDirection(Protocol* protocol, Message* cmd, int handle);
     bool getAnOutputFormat(Protocol* protocol, Message* cmd, int handle);
+    bool getGaugeStatus();
 };
 
 #endif

@@ -48,6 +48,7 @@ const char* mks9xx::nameCCControl             = "CCCON";
 const char* mks9xx::nameGasType               = "GASTYPE";
 const char* mks9xx::nameLock                  = "LOCK";
 const char* mks9xx::nameCCPressureDose        = "CCDOSE";
+const char* mks9xx::nameSTA				      = "STA";
 
 #define NUM_PARAMS (&LAST_PARAM - &FIRST_PARAM - 1)
 const double mks9xx::pollPeriod = 1.0;
@@ -419,6 +420,7 @@ mks9xx::mks9xx(const char* portName,
     createParam(nameGasType, asynParamInt32, &indexGasType);
     createParam(nameLock, asynParamInt32, &indexLock);
     createParam(nameCCPressureDose, asynParamFloat64, &indexCCPressureDose);
+    createParam(nameSTA, asynParamInt32, &indexSTA);
 
 
     setIntegerParam(indexConnection, 0);
@@ -459,6 +461,7 @@ mks9xx::mks9xx(const char* portName,
     setIntegerParam(indexCCControl, 0);
     setIntegerParam(indexGasType, 0);
     setIntegerParam(indexLock, 0);
+    setIntegerParam(indexSTA, 0);
 
 
     // Connect to the serial port
@@ -702,6 +705,8 @@ void mks9xx::readRun()
             getSpStatus(protocolSpStatus, msgGetSpStatus[1], indexSetPointState2);
             getSpStatus(protocolSpStatus, msgGetSpStatus[2], indexSetPointState3);
             getTransducerStatus(protocolTransducerStatus, &msgTransducerStatus, indexTransducerStatus);
+
+            getGaugeStatus();
 
             // Already have pressure1 from outer conditional, so get remaining 4
             getFloat(protocolPressure, msgPressure[1], indexPressure2);
@@ -994,6 +999,42 @@ bool mks9xx::getAnOutputFormat(Protocol* protocol, Message* cmd, int handle)
     }
     return result;
 }
+
+/** Determines the overall gauge status based on multiple parameters
+ *
+ *  \return True for success
+ */
+bool mks9xx::getGaugeStatus()
+	{
+    bool result = false;
+    int connected = 0;
+    int transStatus = 0;
+    int sta = STA_FAULT;
+    this->getIntegerParam(indexConnection, &connected);
+    this->getIntegerParam(indexTransducerStatus, &transStatus);
+
+    if (connected)
+    	{
+    	if (transStatus == 0)
+    		{
+    		sta = STA_OK;
+    		}
+    	else
+			{
+			sta = STA_TRANSFAULT;
+			}
+    	}
+    else
+    	sta = STA_NOTCONNECTED;
+
+    lock();
+	setIntegerParam(indexSTA, sta);
+	unlock();
+
+	result = true;
+
+	return result;
+	}
 
 /** Called when asyn clients call pasynInt32->write().
   * \param[in] pasynUser pasynUser structure that encodes the reason and address.
