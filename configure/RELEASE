@@ -7,7 +7,7 @@ WORK=/dls_sw/work/R3.14.12.3/support
 
 # External module definitions
 ASYN=       $(SUPPORT)/asyn/4-21
-ASYNAID=    $(SUPPORT)/asynaid/1-4
+ASYNAID=    $(SUPPORT)/asynaid/1-4-1
 
 # EPICS_BASE usually appears last so other apps can override stuff:
 EPICS_BASE=/dls_sw/epics/R3.14.12.3/base
