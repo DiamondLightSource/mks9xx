@@ -56,32 +56,32 @@ const int mks9xx::userTagLength = 30;
 
 MsgFailReply::MsgFailReply()
     : Message("MsgFailReply")
-{
+	{
     pre = new ConstStr("pre", this, "@253NAK", 7);
     val = new TextInt<epicsInt32>("val", this, /*base=*/10);
     post = new ConstStr("post", this, ";FF", 3);
-}
+	}
 MsgStringReply::MsgStringReply()
     : Message("MsgStringReply")
-{
+	{
     pre = new ConstStr("pre", this, "@253ACK", 7);
     val = new TerminatedStr("val", this, ";FF");
-}
+	}
 MsgFloatReply::MsgFloatReply()
     : Message("MsgFloatReply")
-{
+	{
     pre = new ConstStr("pre", this, "@253ACK", 7);
 //    val = new TextFloat<epicsFloat64>("val", this, 1, false);
     val = new TextFloat<epicsFloat64>("val", this, 2, false);
     post = new ConstStr("post", this, ";FF", 3);
-}
+	}
 MsgIntReply::MsgIntReply()
     : Message("MsgIntReply")
-{
+	{
     pre = new ConstStr("pre", this, "@253ACK", 7);
     val = new TextInt<epicsInt32>("val", this, /*base=*/10);
     post = new ConstStr("post", this, ";FF", 3);
-}
+	}
 MsgGetAnOutputFormat::MsgGetAnOutputFormat(int channel_in)
     : Message("MsgGetAnOutputFormat")
 	{
@@ -109,52 +109,52 @@ MsgReplyAnOutputFormat::MsgReplyAnOutputFormat()
 
 MsgGetUnit::MsgGetUnit()
     : Message("MsgGetUnit")
-{
+	{
     pre = new ConstStr("pre", this, "@253U?;FF", 9);
-}
+	}
 MsgSetUnit::MsgSetUnit()
     : Message("MsgSetUnit")
-{
+	{
     pre = new ConstStr("pre", this, "@253U!", 6);
     val = new TerminatedEnum("val", this, ";FF", "TORR\0MBAR\0PASCAL\0\0");
-}
+	}
 MsgReplyUnit::MsgReplyUnit()
     : Message("MsgReplyUnit")
-{
+	{
     pre = new ConstStr("pre", this, "@253ACK", 7);
     val = new TerminatedEnum("val", this, ";FF", "TORR\0MBAR\0PASCAL\0\0");
-}
+	}
 MsgGetUserTag::MsgGetUserTag()
     : Message("MsgGetUserTag")
-{
+	{
     pre = new ConstStr("pre", this, "@253UT?;FF", 10);
-}
+	}
 MsgSetUsertag::MsgSetUsertag()
     : Message("MsgSetUsertag")
-{
+	{
     pre = new ConstStr("pre", this, "@253UT!", 7);
     val = new TerminatedStr("val", this, ";FF");
-}
+	}
 MsgGetFirmwareVersion::MsgGetFirmwareVersion()
     : Message("MsgGetFirmwareVersion")
-{
+	{
     pre = new ConstStr("pre", this, "@253FV?;FF", 10);
-}
+	}
 MsgGetHardwareVersion::MsgGetHardwareVersion()
     : Message("MsgGetHardwareVersion")
-{
+	{
     pre = new ConstStr("pre", this, "@253HV?;FF", 10);
-}
+	}
 MsgGetManufacturer::MsgGetManufacturer()
     : Message("MsgGetManufacturer")
-{
+	{
     pre = new ConstStr("pre", this, "@253MF?;FF", 10);
-}
+	}
 MsgGetModel::MsgGetModel()
     : Message("MsgGetModel")
-{
+	{
     pre = new ConstStr("pre", this, "@253MD?;FF", 10);
-}
+	}
 MsgGetPressure::MsgGetPressure(int gauge_in)
     : Message("MsgGetPressure")
 	{
@@ -165,19 +165,19 @@ MsgGetPressure::MsgGetPressure(int gauge_in)
 	}
 MsgGetSerialNumber::MsgGetSerialNumber()
     : Message("MsgGetSerialNumber")
-{
+	{
     pre = new ConstStr("pre", this, "@253SN?;FF", 10);
-}
+	}
 MsgGetTimeOn::MsgGetTimeOn()
     : Message("MsgGetTimeOn")
-{
+	{
     pre = new ConstStr("pre", this, "@253TIM?;FF", 11);
-}
+	}
 MsgGetTransducerTemperature::MsgGetTransducerTemperature()
     : Message("MsgGetTransducerTemperature")
-{
+	{
     pre = new ConstStr("pre", this, "@253TEM?;FF", 11);
-}
+	}
 MsgGetSetpoint::MsgGetSetpoint(int relay_in)
     : Message("MsgGetSetpoint")
 	{
@@ -198,83 +198,83 @@ MsgSetSetpoint::MsgSetSetpoint(int relay_in)
 	}
 MsgGetHysteresis::MsgGetHysteresis(int relay_in)
     : Message("MsgGetHysteresis")
-{
+	{
     pre = new ConstStr("pre", this, "@253SH", 6);
 	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
     post = new ConstStr("post", this, "?;FF", 4);
     *relay = relay_in;
-}
+	}
 MsgSetHysteresis::MsgSetHysteresis(int relay_in)
     : Message("MsgSetHysteresis")
-{
+	{
     pre = new ConstStr("pre", this, "@253SH", 6);
 	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
     pling = new ConstStr("pling", this, "!", 1);
     val = new TextFloat<epicsFloat64>("val", this, 1, false);
     post = new ConstStr("post", this, ";FF", 3);
     *relay = relay_in;
-}
+	}
 MsgGetSpDirection::MsgGetSpDirection(int relay_in)
     : Message("MsgGetSpDirection")
-{
+	{
     pre = new ConstStr("pre", this, "@253SD", 6);
 	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
     post = new ConstStr("post", this, "?;FF", 4);
     *relay = relay_in;
-}
+	}
 MsgSetSpDirection::MsgSetSpDirection(int relay_in)
     : Message("MsgSetSpDirection")
-{
+	{
     pre = new ConstStr("pre", this, "@253SD", 6);
 	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
     pling = new ConstStr("pling", this, "!", 1);
     val = new TerminatedEnum("val", this, ";FF", "BELOW\0ABOVE\0\0");
     *relay = relay_in;
-}
+	}
 MsgReplySpDirection::MsgReplySpDirection()
     : Message("MsgReplySpDirection")
-{
+	{
     pre = new ConstStr("pre", this, "@253ACK", 7);
     val = new TerminatedEnum("val", this, ";FF", "BELOW\0ABOVE\0\0");
-}
+	}
 MsgGetSpEnable::MsgGetSpEnable(int relay_in)
     : Message("MsgGetSpEnable")
-{
+	{
     pre = new ConstStr("pre", this, "@253EN", 6);
 	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
     post = new ConstStr("post", this, "?;FF", 4);
     *relay = relay_in;
-}
+	}
 MsgSetSpEnable::MsgSetSpEnable(int relay_in)
     : Message("MsgSetSpEnable")
-{
+	{
     pre = new ConstStr("pre", this, "@253EN", 6);
 	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
     pling = new ConstStr("pling", this, "!", 1);
     val = new TerminatedEnum("val", this, ";FF", "OFF\0ON\0\0");
     *relay = relay_in;
-}
+	}
 MsgReplySpEnable::MsgReplySpEnable()
     : Message("MsgReplySpEnable")
-{
+	{
     pre = new ConstStr("pre", this, "@253ACK", 7);
     val = new TerminatedEnum("val", this, ";FF", "OFF\0ON\0\0");
-}
+	}
 MsgGetSpStatus::MsgGetSpStatus(int relay_in)
     : Message("MsgGetSpStatus")
 	{
 	//    pre = new ConstStr("pre", this, "@253SS1?;FF", 11);
-		pre = new ConstStr("pre", this, "@253SS", 6);
-		relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
-		post = new ConstStr("post", this, "?;FF", 4);
-		*relay = relay_in;
+	pre = new ConstStr("pre", this, "@253SS", 6);
+	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
+	post = new ConstStr("post", this, "?;FF", 4);
+	*relay = relay_in;
 	}
 MsgReplySpStatus::MsgReplySpStatus()
     : Message("MsgReplySpStatus")
-{
+	{
     pre = new ConstStr("pre", this, "@253ACK", 7);
     val = new TerminatedEnum("val", this, ";FF", "CLEAR\0SET\0\0");
-}
+	}
 
 MsgGetTransducerType::MsgGetTransducerType()
     : Message("MsgGetTransducerType")
@@ -362,10 +362,10 @@ MsgGetCCPressureDose::MsgGetCCPressureDose()
   */
 mks9xx::ReadThread::ReadThread(mks9xx* owner)
     : thread(*this, "readThread", epicsThreadGetStackSize(epicsThreadStackMedium))
-{
+	{
     this->owner = owner;
     thread.start();
-}
+	}
 
 /** Constructor.
 * \param[in] portDriver The asyn port driver this proxy belongs to.
