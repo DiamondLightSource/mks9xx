@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 957
-y 27
-w 387
-h 295
+x 1156
+y 48
+w 445
+h 243
 font "arial-medium-r-14.0"
 ctlFont "arial-bold-r-14.0"
 btnFont "arial-bold-r-14.0"
@@ -31,8 +31,8 @@ minor 0
 release 0
 x 11
 y 46
-w 368
-h 241
+w 424
+h 189
 lineColor index 14
 fill
 fillColor index 5
@@ -44,8 +44,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 316
-y 255
+x 364
+y 199
 w 56
 h 24
 fgColor index 46
@@ -65,7 +65,7 @@ minor 1
 release 0
 x 0
 y 0
-w 388
+w 444
 h 30
 font "arial-bold-r-16.0"
 fontAlign "center"
@@ -82,8 +82,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 18
-y 90
+x 15
+y 94
 w 112
 h 24
 font "arial-medium-r-14.0"
@@ -101,8 +101,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 146
-y 90
+x 143
+y 94
 w 110
 h 20
 controlPv "$(P):PRESSURE1_RBV"
@@ -122,8 +122,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 18
-y 134
+x 15
+y 121
 w 112
 h 24
 font "arial-medium-r-14.0"
@@ -141,8 +141,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 18
-y 178
+x 15
+y 148
 w 112
 h 24
 font "arial-medium-r-14.0"
@@ -160,8 +160,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 18
-y 221
+x 15
+y 175
 w 119
 h 24
 font "arial-medium-r-14.0"
@@ -179,8 +179,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 146
-y 134
+x 143
+y 121
 w 110
 h 20
 controlPv "$(P):PRESSURE2_RBV"
@@ -200,8 +200,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 146
-y 178
+x 143
+y 148
 w 110
 h 20
 controlPv "$(P):PRESSURE3_RBV"
@@ -221,8 +221,8 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 146
-y 222
+x 143
+y 175
 w 110
 h 20
 controlPv "$(P):PRESSURE4_RBV"
@@ -243,15 +243,15 @@ major 4
 minor 1
 release 0
 x 277
-y 59
-w 42
+y 90
+w 80
 h 24
 font "arial-medium-r-14.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Temp"
+  "Temperature"
 }
 endObjectProperties
 
@@ -261,7 +261,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 270
+x 370
 y 90
 w 50
 h 20
@@ -282,8 +282,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 306
-y 219
+x 277
+y 174
 w 64
 h 25
 fgColor index 25
@@ -347,5 +347,111 @@ endObjectProperties
 
 endGroup
 
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 143
+y 67
+w 110
+h 20
+controlPv "$(P):UNITS_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "arial-bold-r-14.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 15
+y 67
+w 112
+h 24
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Pressure units"
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 15
+y 201
+w 238
+h 24
+
+beginGroup
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 143
+y 201
+w 110
+h 20
+controlPv "$(P):CCDOSE_RBV"
+displayMode "exp"
+precision 2
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "arial-bold-r-14.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 15
+y 201
+w 119
+h 24
+font "arial-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+visInvert
+visMin "0"
+visMax "3"
+value {
+  "CC Dose"
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(P):TRANSDUCERTYPE_RBV"
+visInvert
+visMin "0"
+visMax "3"
 endObjectProperties
 

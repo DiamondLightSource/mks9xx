@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1270
-y 753
+x 674
+y 27
 w 285
 h 392
 font "arial-medium-r-14.0"
@@ -165,7 +165,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Pressure (mbar)"
+  "Pressure"
 }
 endObjectProperties
 
@@ -522,5 +522,27 @@ fill
 fillColor index 17
 fillAlarm
 alarmPv "$(P):CONNECTION_RBV"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 201
+y 241
+w 64
+h 24
+controlPv "$(P):UNITS_RBV"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "arial-bold-r-14.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
 endObjectProperties
 

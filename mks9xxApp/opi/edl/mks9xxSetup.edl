@@ -3,7 +3,7 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1381
+x 1382
 y 49
 w 517
 h 358
@@ -294,7 +294,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 31
+x 29
 y 237
 w 71
 h 24
@@ -313,7 +313,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 32
+x 29
 y 266
 w 71
 h 24
@@ -753,8 +753,33 @@ font "arial-medium-r-14.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
+visPv "$(P):TRANSDUCERTYPE_RBV"
+visInvert
+visMin "3"
+visMax "4"
 value {
   "Analogue O/P 2"
 }
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 116
+y 301
+w 196
+h 20
+controlPv "$(P):UNITS_RBV"
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "arial-bold-r-14.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
 endObjectProperties
 
