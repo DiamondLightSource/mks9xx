@@ -4,10 +4,8 @@
 #
 # % macro, P, PV Prefix
 # % macro, PORT, Asyn port name
-# % macro, gda_name, GDA root name
-# % macro, gda_desc, GDA description
 #
-
+# % gui, $(PORT), edm, mks9xxGauge.edl, P=$(P) 
 # %archiver 10 Monitor
 record(mbbi, "$(P):CONNECTION_RBV")
     {
