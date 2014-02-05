@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 674
-y 27
+x 676
+y 53
 w 285
 h 392
 font "arial-medium-r-14.0"
@@ -29,8 +29,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 8
-y 36
+x 7
+y 37
 w 270
 h 350
 
@@ -42,8 +42,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 8
-y 46
+x 7
+y 47
 w 270
 h 340
 lineColor index 14
@@ -57,8 +57,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 8
-y 36
+x 7
+y 37
 w 145
 h 16
 
@@ -70,8 +70,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 8
-y 36
+x 7
+y 37
 w 145
 h 16
 lineColor index 14
@@ -83,9 +83,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
-x 8
-y 36
+release 1
+x 7
+y 37
 w 145
 h 16
 font "arial-medium-r-12.0"
@@ -128,7 +128,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 4
 release 0
 x 82
 y 354
@@ -155,7 +155,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 18
 y 241
 w 112
@@ -233,7 +233,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 4
 release 0
 x 19
 y 354
@@ -260,7 +260,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 0
 y 0
 w 285
@@ -279,7 +279,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 20
 y 58
 w 112
@@ -318,7 +318,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 4
 release 0
 x 145
 y 354
@@ -345,7 +345,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 18
 y 270
 w 112
@@ -385,7 +385,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 19
 y 301
 w 50
@@ -404,7 +404,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 82
 y 301
 w 50
@@ -423,7 +423,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 145
 y 301
 w 50
@@ -437,63 +437,12 @@ value {
 }
 endObjectProperties
 
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 19
-y 322
-w 43
-h 16
-lineColor index 14
-fill
-fillColor index 15
-fillAlarm
-alarmPv "$(P):SETPOINTSTATE1_RBV"
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 82
-y 322
-w 43
-h 16
-lineColor index 14
-fill
-fillColor index 15
-fillAlarm
-alarmPv "$(P):SETPOINTSTATE2_RBV"
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 145
-y 322
-w 43
-h 16
-lineColor index 14
-fill
-fillColor index 15
-fillAlarm
-alarmPv "$(P):SETPOINTSTATE3_RBV"
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 22
 y 80
 w 112
@@ -544,5 +493,122 @@ font "arial-bold-r-14.0"
 fontAlign "center"
 lineWidth 2
 lineAlarm
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 18
+y 321
+w 43
+h 16
+lineColor index 14
+fill
+fillColor index 15
+fillAlarm
+visPv "$(P):SETPOINTSTATE1_RBV"
+visInvert
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 18
+y 321
+w 43
+h 16
+lineColor index 14
+fill
+fillColor index 20
+fillAlarm
+visPv "$(P):SETPOINTSTATE1_RBV"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 81
+y 321
+w 43
+h 16
+lineColor index 14
+fill
+fillColor index 15
+fillAlarm
+visPv "$(P):SETPOINTSTATE2_RBV"
+visInvert
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 81
+y 321
+w 43
+h 16
+lineColor index 14
+fill
+fillColor index 20
+fillAlarm
+visPv "$(P):SETPOINTSTATE2_RBV"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 145
+y 321
+w 43
+h 16
+lineColor index 14
+fill
+fillColor index 15
+fillAlarm
+visPv "$(P):SETPOINTSTATE3_RBV"
+visInvert
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 145
+y 321
+w 43
+h 16
+lineColor index 14
+fill
+fillColor index 20
+fillAlarm
+visPv "$(P):SETPOINTSTATE3_RBV"
+visMin "0"
+visMax "1"
 endObjectProperties
 

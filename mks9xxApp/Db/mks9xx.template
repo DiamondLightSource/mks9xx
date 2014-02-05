@@ -1,9 +1,18 @@
-
 #
 # mks9xx.template
 #
+# required substitutions:
 # % macro, P, PV Prefix
 # % macro, PORT, Asyn port name
+#
+# optional substitutions:
+#% macro, relay1_level,     The desired relay1 setpoint value.
+#% macro, relay1_off_level, The desired relay1 off setpoint value.
+#% macro, relay2_level,     The desired relay2 setpoint value.
+#% macro, relay2_off_level, The desired relay2 off setpoint value.
+#% macro, relay3_level,     The desired relay3 setpoint value.
+#% macro, relay3_off_level, The desired relay3 off setpoint value.
+#% macro, gas_type,         The gas type.
 #
 # % gui, $(PORT), edm, mks9xxGauge.edl, P=$(P) 
 # %archiver 10 Monitor
@@ -97,6 +106,8 @@ record(mbbo, "$(P):UNITS")
   field(ONST, "mBar")
   field(TWVL, "2")
   field(TWST, "Pascal")
+  field(PINI, "YES")
+  field(DOL,  "mBar")
 }
 # %archiver 10 Monitor
 record(stringin, "$(P):USERTAG_RBV")
@@ -146,6 +157,8 @@ record(ai, "$(P):PRESSURE1_RBV")
   field(DTYP, "asynFloat64")
   field(INP,  "@asyn($(PORT),0,5)PRESSURE1")
   field(PREC, "1")
+  field(HOPR, "1500")
+  field(LOPR, "1.0e-11")
 }
 # %archiver 10 Monitor
 record(ai, "$(P):PRESSURE2_RBV")
@@ -155,6 +168,8 @@ record(ai, "$(P):PRESSURE2_RBV")
   field(DTYP, "asynFloat64")
   field(INP,  "@asyn($(PORT),0,5)PRESSURE2")
   field(PREC, "1")
+  field(HOPR, "1500")
+  field(LOPR, "1.0e-11")
 }
 # %archiver 10 Monitor
 record(ai, "$(P):PRESSURE3_RBV")
@@ -164,6 +179,8 @@ record(ai, "$(P):PRESSURE3_RBV")
   field(DTYP, "asynFloat64")
   field(INP,  "@asyn($(PORT),0,5)PRESSURE3")
   field(PREC, "1")
+  field(HOPR, "1500")
+  field(LOPR, "1.0e-11")
 }
 # %archiver 10 Monitor
 record(ai, "$(P):PRESSURE4_RBV")
@@ -173,6 +190,8 @@ record(ai, "$(P):PRESSURE4_RBV")
   field(DTYP, "asynFloat64")
   field(INP,  "@asyn($(PORT),0,5)PRESSURE4")
   field(PREC, "1")
+  field(HOPR, "1500")
+  field(LOPR, "1.0e-11")
 }
 # %archiver 10 Monitor
 record(ai, "$(P):PRESSURE5_RBV")
@@ -181,6 +200,8 @@ record(ai, "$(P):PRESSURE5_RBV")
   field(DTYP, "asynFloat64")
   field(INP,  "@asyn($(PORT),0,5)PRESSURE5")
   field(PREC, "1")
+  field(HOPR, "1500")
+  field(LOPR, "1.0e-11")
 }
 record(stringin, "$(P):SERIALNUMBER_RBV")
 {
@@ -235,6 +256,8 @@ record(ao, "$(P):SETPOINT1")
   field(DTYP, "asynFloat64")
   field(OUT,  "@asyn($(PORT),0,5)SETPOINT1")
   field(PREC, "1")
+  field(PINI, "YES")
+  field(DOL,  "$(relay1_level=1.0e-5)")
 }
 # %archiver 10 Monitor
 # %autosave 2 VAL
@@ -243,6 +266,8 @@ record(ao, "$(P):SETPOINT2")
   field(DTYP, "asynFloat64")
   field(OUT,  "@asyn($(PORT),0,5)SETPOINT2")
   field(PREC, "1")
+  field(PINI, "YES")
+  field(DOL,  "$(relay2_level=1.0)")
 }
 # %archiver 10 Monitor
 # %autosave 2 VAL
@@ -251,6 +276,8 @@ record(ao, "$(P):SETPOINT3")
   field(DTYP, "asynFloat64")
   field(OUT,  "@asyn($(PORT),0,5)SETPOINT3")
   field(PREC, "1")
+  field(PINI, "YES")
+  field(DOL,  "$(relay3_level=1.0)")
 }
 # %archiver 10 Monitor
 record(ai, "$(P):SETPOINTHYSTERESIS1_RBV")
@@ -283,6 +310,8 @@ record(ao, "$(P):SETPOINTHYSTERESIS1")
   field(DTYP, "asynFloat64")
   field(OUT,  "@asyn($(PORT),0,5)SETPOINTHYSTERESIS1")
   field(PREC, "1")
+  field(PINI, "YES")
+  field(DOL,  "$(relay1_off_level=1.2e-5)")
 }
 # %archiver 10 Monitor
 # %autosave 2 VAL
@@ -291,6 +320,8 @@ record(ao, "$(P):SETPOINTHYSTERESIS2")
   field(DTYP, "asynFloat64")
   field(OUT,  "@asyn($(PORT),0,5)SETPOINTHYSTERESIS2")
   field(PREC, "1")
+  field(PINI, "YES")
+  field(DOL,  "$(relay2_off_level=2.0)")
 }
 # %archiver 10 Monitor
 # %autosave 2 VAL
@@ -299,6 +330,8 @@ record(ao, "$(P):SETPOINTHYSTERESIS3")
   field(DTYP, "asynFloat64")
   field(OUT,  "@asyn($(PORT),0,5)SETPOINTHYSTERESIS3")
   field(PREC, "1")
+  field(PINI, "YES")
+  field(DOL,  "$(relay3_off_level=2.0)")
 }
 # %archiver 10 Monitor
 record(mbbi, "$(P):SETPOINTDIRECTION1_RBV")
@@ -503,6 +536,10 @@ record(mbbi, "$(P):TRANSDUCERSTATUS_RBV")
     field(ONST, "MicroPirani Fail")
     field(TWVL, "2")
     field(TWST, "Piezo Fail")
+    field(THVL, "3")
+    field(THST, "ColdCathode Fail")
+    field(FRVL, "4")
+    field(FRST, "Cold Cathode On")
     field(UNSV, "MAJOR")
     field(ZRSV, "NO_ALARM")
     field(ONSV, "MAJOR")
@@ -555,6 +592,8 @@ record(mbbo, "$(P):GASTYPE")
     field(SVST, "CO2")
     field(EIVL, "8")
     field(EIST, "Xenon")
+    field(PINI, "YES")
+    field(DOL,  "$(gas_type=Nitrogen)")
     }
 
 # %archiver 10 Monitor

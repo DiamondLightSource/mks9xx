@@ -192,7 +192,7 @@ MsgSetSetpoint::MsgSetSetpoint(int relay_in)
     pre = new ConstStr("pre", this, "@253SP", 6);
     relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
     pling = new ConstStr("pling", this, "!", 1);
-    val = new TextFloat<epicsFloat64>("val", this, 1, false);
+    val = new TextFloat<epicsFloat64>("val", this, 1, true);
     post = new ConstStr("post", this, ";FF", 3);
 	*relay = relay_in;
 	}
@@ -210,7 +210,7 @@ MsgSetHysteresis::MsgSetHysteresis(int relay_in)
     pre = new ConstStr("pre", this, "@253SH", 6);
 	relay = new TextInt<epicsInt32>("relay", this, /*base=*/10);
     pling = new ConstStr("pling", this, "!", 1);
-    val = new TextFloat<epicsFloat64>("val", this, 1, false);
+    val = new TextFloat<epicsFloat64>("val", this, 1, true);
     post = new ConstStr("post", this, ";FF", 3);
     *relay = relay_in;
 	}
@@ -285,7 +285,7 @@ MsgReplyTransducerType::MsgReplyTransducerType()
     : Message("MsgReplyTransducerType")
 	{
     pre = new ConstStr("pre", this, "@253ACK", 7);
-    val = new TerminatedEnum("val", this, ";FF", "LOADLOCK\0DUALTRANS\0MicroPirani\0UniMag\0DualMag\0QuadMag\0\0");
+    val = new TerminatedEnum("val", this, ";FF", "LOADLOCK\0DUALTRANS\0MICROPIRANI\0UNUMAG\0DUALMAG\0QUADMAG\0\0");
 	}
 MsgGetTransducerStatus::MsgGetTransducerStatus()
     : Message("MsgGetTransducerStatus")
@@ -297,7 +297,7 @@ MsgReplyTransducerStatus::MsgReplyTransducerStatus()
 	{
 	// The T command returns the MicroPirani sensor status as O for OK, M for MicroPirani fail or Z for Piezo fail
     pre = new ConstStr("pre", this, "@253ACK", 7);
-    val = new TerminatedEnum("val", this, ";FF", "O\0M\0Z\0\0");
+    val = new TerminatedEnum("val", this, ";FF", "O\0M\0Z\0C\0G\0\0");
 	}
 
 MsgSetCCControl::MsgSetCCControl()
@@ -473,7 +473,7 @@ mks9xx::mks9xx(const char* portName,
             serialPortName, asynRtn);
     	}
     pasynOctetSyncIO->flush(this->serialPortUser);
-
+    pasynOctetSyncIO->setInputEos(this->serialPortUser,"FF",2);
 
     protocolAnOutputFormat = new Protocol("protocolAnOutputFormat", this->serialPortUser);
     //protocolAnOutputFormat->debug(5);
@@ -546,7 +546,7 @@ mks9xx::mks9xx(const char* portName,
     protocolLock->addMessage(new MsgReplyLock);
     protocolLock->addMessage(new MsgFailReply);
     protocolCCPressureDose = new Protocol("protocolCCPressureDose", this->serialPortUser);
-    protocolCCPressureDose->debug(5);
+    //protocolCCPressureDose->debug(5);
     protocolCCPressureDose->addMessage(new MsgFloatReply);
     protocolCCPressureDose->addMessage(new MsgFailReply);
 
@@ -1015,7 +1015,7 @@ bool mks9xx::getGaugeStatus()
 
     if (connected)
     	{
-    	if (transStatus == 0)
+    	if (transStatus == 0 || transStatus == 4)
     		{
     		sta = STA_OK;
     		}
