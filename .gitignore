@@ -1,0 +1,14 @@
+configure/O.*
+data
+db
+dbd
+documentation/doxygen
+etc/makeIocs/O.*
+iocs/example
+iocs/example_sim
+lib
+mks9xxApp/Db/O.*
+mks9xxApp/opi/edl/O.*
+mks9xxApp/opi/symbol/O.*
+mks9xxApp/protocol/O.*
+mks9xxApp/src/O.*
