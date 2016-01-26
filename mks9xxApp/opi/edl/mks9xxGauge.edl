@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 676
-y 53
+x 678
+y 79
 w 285
 h 392
 font "arial-medium-r-14.0"
@@ -181,7 +181,7 @@ w 64
 h 24
 controlPv "$(P):PRESSURE3_RBV"
 displayMode "exp"
-precision 1
+precision 2
 fgColor index 16
 fgAlarm
 bgColor index 12
