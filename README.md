@@ -3,7 +3,7 @@ INTRODUCTION
 This is the EPICS support module for the
 MKS 9xx Gauge Controller. Providing support for the following gauges: MKS 901, 901P, 925, 971B, 972B, 974B
 
-The conroller utilises a RS232 interface for serial communications. The default
+The controller utilises a RS232 interface for serial communications. The default
 framing is:
 
 9600 baud
@@ -24,7 +24,7 @@ USAGE
 One template is provided here:
 
 1) mks9xx.template
-This instatiates all the records associated with the controller's common
+This instantiates all the records associated with the controller's common
 
    
 The user interface is presently available via EDM screens. 
